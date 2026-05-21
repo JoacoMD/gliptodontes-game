@@ -1,0 +1,14 @@
+/* Las @font-face reales se añaden en /public/assets/fonts/. Mientras tanto usamos
+   fuentes del sistema con perfiles "decorativo" (serif) y "simplificado" (sans). */
+
+:root {
+  --font-decorative: 'Berkshire Swash', 'Georgia', 'Times New Roman', serif;
+  --font-simplified: 'Atkinson Hyperlegible', 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+:root[data-simplified-font='true'] {
+  --font-active: var(--font-simplified);
+}
+:root[data-simplified-font='false'] {
+  --font-active: var(--font-decorative);
+}
