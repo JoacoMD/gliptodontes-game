@@ -26,6 +26,10 @@ export interface MinigameLayoutProps {
   hud?: ReactNode;
   /** Optional footer overlay (tool dock, action buttons) rendered at the bottom. */
   footer?: ReactNode;
+  /** When set, invoked when the player taps "Next" in the success modal,
+   *  instead of the default behavior (navigate to /misiones). Used by
+   *  multi-scene minigames that advance to the next scene in-place. */
+  onNext?: () => void;
 }
 
 /**
@@ -40,6 +44,7 @@ export function MinigameLayout({
   didYouKnow,
   hud,
   footer,
+  onNext,
 }: MinigameLayoutProps): React.JSX.Element {
   const navigate = useNavigate();
   const [helpOpen, setHelpOpen] = useState(true);
@@ -59,17 +64,17 @@ export function MinigameLayout({
     (action: 'retry' | 'next' | 'menu') => {
       setResult(null);
       if (action === 'retry') {
-        // Re-open the help modal so the player sees the rules again,
-        // and ask the Phaser scene to reset its gameplay to the starting
-        // position. The scene stays paused (paused = helpOpen || result)
-        // so the model timer does not tick until the user closes the help.
         setHelpOpen(true);
         EventBus.emit(EventKeys.MinigameReset);
-      } else {
-        navigate(RoutePaths.Missions);
+        return;
       }
+      if (action === 'next' && onNext) {
+        onNext();
+        return;
+      }
+      navigate(RoutePaths.Missions);
     },
-    [navigate],
+    [navigate, onNext],
   );
 
   return (

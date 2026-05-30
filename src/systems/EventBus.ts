@@ -1,6 +1,7 @@
 import { EventKeys } from '@/config/Constants';
 import type { Settings, SaveData, MinigameResult } from '@/types';
 import type { ExcavationState, Tool } from '@/minigames/excavation/types';
+import type { HiddenObject, SearchState } from '@/minigames/search/types';
 
 export interface BusEvents {
   [EventKeys.SettingsChanged]: (s: Settings) => void;
@@ -14,6 +15,9 @@ export interface BusEvents {
   [EventKeys.ModalClosed]: (id: string) => void;
   [EventKeys.ExcavationToolSelected]: (tool: Tool) => void;
   [EventKeys.ExcavationStateChanged]: (state: ExcavationState) => void;
+  [EventKeys.SearchModelReady]: (state: SearchState) => void;
+  [EventKeys.SearchObjectFound]: (object: HiddenObject) => void;
+  [EventKeys.SearchHintRequested]: () => void;
 }
 
 type AnyListener = (...args: unknown[]) => void;

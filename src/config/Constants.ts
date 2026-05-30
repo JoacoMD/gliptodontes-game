@@ -5,6 +5,9 @@ export const SceneKeys = {
   MinigameAR: 'ARScene',
   MinigameExcavation: 'ExcavationScene',
   MinigameSearch: 'SearchScene',
+  MinigameSearchLab: 'SearchLabScene',
+  MinigameSearchSite: 'SearchSiteScene',
+  MinigameSearchMuseum: 'SearchMuseumScene',
   MinigameOrigin: 'OriginScene',
 } as const;
 export type SceneKey = (typeof SceneKeys)[keyof typeof SceneKeys];
@@ -34,6 +37,9 @@ export const EventKeys = {
   ModalClosed: 'modal:close',
   ExcavationToolSelected: 'excavation:tool',
   ExcavationStateChanged: 'excavation:state',
+  SearchModelReady: 'search:modelReady',
+  SearchObjectFound: 'search:objectFound',
+  SearchHintRequested: 'search:hintRequested',
 } as const;
 export type EventKey = (typeof EventKeys)[keyof typeof EventKeys];
 
