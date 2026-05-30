@@ -1,5 +1,6 @@
 import { EventKeys } from '@/config/Constants';
 import type { Settings, SaveData, MinigameResult } from '@/types';
+import type { ExcavationState, Tool } from '@/minigames/excavation/types';
 
 export interface BusEvents {
   [EventKeys.SettingsChanged]: (s: Settings) => void;
@@ -11,6 +12,8 @@ export interface BusEvents {
   [EventKeys.MinigameReset]: () => void;
   [EventKeys.ModalOpened]: (id: string) => void;
   [EventKeys.ModalClosed]: (id: string) => void;
+  [EventKeys.ExcavationToolSelected]: (tool: Tool) => void;
+  [EventKeys.ExcavationStateChanged]: (state: ExcavationState) => void;
 }
 
 type AnyListener = (...args: unknown[]) => void;

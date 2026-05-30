@@ -32,22 +32,36 @@ export function PhaserGame({
   const containerRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<Phaser.Game | null>(null);
 
-  // Mount / unmount lifecycle. Recreates the game if sceneKey changes.
+  // Keep the latest props in refs so they can be read inside the long-lived
+  // mount effect without becoming dependencies (which would re-create the game
+  // and trigger an infinite mount loop every time the HUD re-renders).
+  const scenesRef = useRef(scenes);
+  const sceneDataRef = useRef(sceneData);
+  const onResultRef = useRef(onResult);
+  const onReadyRef = useRef(onReady);
+  useEffect(() => {
+    scenesRef.current = scenes;
+    sceneDataRef.current = sceneData;
+    onResultRef.current = onResult;
+    onReadyRef.current = onReady;
+  });
+
+  // Mount / unmount lifecycle. ONLY sceneKey identifies the game.
   useEffect(() => {
     const parent = containerRef.current;
     if (!parent) return;
     const game = createMinigameGame({
       parent,
-      scenes,
+      scenes: scenesRef.current,
       startScene: sceneKey,
-      startData: sceneData,
+      startData: sceneDataRef.current,
     });
     gameRef.current = game;
     AudioManager.attach(game);
-    game.events.once('ready', () => onReady?.());
+    game.events.once('ready', () => onReadyRef.current?.());
 
-    const handleSuccess = (result: MinigameResult) => onResult(result);
-    const handleFailure = (result: MinigameResult) => onResult(result);
+    const handleSuccess = (result: MinigameResult) => onResultRef.current?.(result);
+    const handleFailure = (result: MinigameResult) => onResultRef.current?.(result);
     EventBus.on(EventKeys.MinigameSuccess, handleSuccess);
     EventBus.on(EventKeys.MinigameFailure, handleFailure);
 
@@ -58,11 +72,7 @@ export function PhaserGame({
       game.destroy(true);
       gameRef.current = null;
     };
-    // sceneKey / scenes are the identity of the game; sceneData/onResult/onReady
-    // are read via closure each mount but we don't want to re-mount on their
-    // identity changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sceneKey, scenes]);
+  }, [sceneKey]);
 
   // Pause / resume on modal overlay state.
   useEffect(() => {

@@ -2,11 +2,13 @@ import { SceneKeys } from '@/config/Constants';
 import { MinigameLayout } from './MinigameLayout';
 import { OriginGameScene } from '@/minigames/origin/scenes/OriginGameScene';
 
+const ORIGIN_SCENES = [OriginGameScene];
+
 export function OriginPage(): React.JSX.Element {
   return (
     <MinigameLayout
       sceneKey={SceneKeys.MinigameOrigin}
-      scenes={[OriginGameScene]}
+      scenes={ORIGIN_SCENES}
       missionId="vienen-o-van"
       helpContent={{
         body: [

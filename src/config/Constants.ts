@@ -32,6 +32,8 @@ export const EventKeys = {
   MinigameReset: 'minigame:reset',
   ModalOpened: 'modal:open',
   ModalClosed: 'modal:close',
+  ExcavationToolSelected: 'excavation:tool',
+  ExcavationStateChanged: 'excavation:state',
 } as const;
 export type EventKey = (typeof EventKeys)[keyof typeof EventKeys];
 

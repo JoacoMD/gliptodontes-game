@@ -2,11 +2,13 @@ import { SceneKeys } from '@/config/Constants';
 import { MinigameLayout } from './MinigameLayout';
 import { ARGameScene } from '@/minigames/ar/scenes/ARGameScene';
 
+const AR_SCENES = [ARGameScene];
+
 export function ARPage(): React.JSX.Element {
   return (
     <MinigameLayout
       sceneKey={SceneKeys.MinigameAR}
-      scenes={[ARGameScene]}
+      scenes={AR_SCENES}
       missionId="dinos-la-plata"
       helpContent={{
         body: [

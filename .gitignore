@@ -12,3 +12,6 @@ coverage/
 .env.local
 .env.*.local
 dev-dist/
+.claude/
+pnpm-workspace.yaml
+docs/

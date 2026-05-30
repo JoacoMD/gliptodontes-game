@@ -1,14 +1,15 @@
-import { useCallback, useMemo, useState, type ReactNode } from 'react';
+import { useCallback, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type Phaser from 'phaser';
 import type { SceneKey } from '@/config/Constants';
-import { RoutePaths } from '@/config/Constants';
+import { EventKeys, RoutePaths } from '@/config/Constants';
 import { HelpButton } from '@/components/ui/HelpButton';
 import { Button } from '@/components/ui/Button';
 import { HowToPlayModal, type HowToPlayContent } from '@/components/modals/HowToPlayModal';
 import { ResultModal } from '@/components/modals/ResultModal';
 import { PhaserGame } from '@/components/PhaserGame';
 import type { MinigameResult } from '@/types';
+import { EventBus } from '@/systems/EventBus';
 import { SaveStore } from '@/systems/SaveStore';
 
 export interface MinigameLayoutProps {
@@ -23,6 +24,8 @@ export interface MinigameLayoutProps {
   didYouKnow?: string;
   /** Optional HUD overlay (lives, progress, timer) rendered above the canvas. */
   hud?: ReactNode;
+  /** Optional footer overlay (tool dock, action buttons) rendered at the bottom. */
+  footer?: ReactNode;
 }
 
 /**
@@ -36,6 +39,7 @@ export function MinigameLayout({
   missionId,
   didYouKnow,
   hud,
+  footer,
 }: MinigameLayoutProps): React.JSX.Element {
   const navigate = useNavigate();
   const [helpOpen, setHelpOpen] = useState(true);
@@ -55,16 +59,18 @@ export function MinigameLayout({
     (action: 'retry' | 'next' | 'menu') => {
       setResult(null);
       if (action === 'retry') {
-        // Re-open help to re-init the scene loop cleanly.
+        // Re-open the help modal so the player sees the rules again,
+        // and ask the Phaser scene to reset its gameplay to the starting
+        // position. The scene stays paused (paused = helpOpen || result)
+        // so the model timer does not tick until the user closes the help.
         setHelpOpen(true);
+        EventBus.emit(EventKeys.MinigameReset);
       } else {
         navigate(RoutePaths.Missions);
       }
     },
     [navigate],
   );
-
-  const memoScenes = useMemo(() => scenes, [scenes]);
 
   return (
     <section
@@ -73,16 +79,23 @@ export function MinigameLayout({
     >
       <PhaserGame
         sceneKey={sceneKey}
-        scenes={memoScenes}
-        sceneData={{ helpContent }}
+        scenes={scenes}
         onResult={handleResult}
         paused={isPaused}
       />
 
       {hud && (
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-20 p-3">
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-20 p-3 pt-16">
           <div className="pointer-events-auto rounded-xl border-2 border-panel-border bg-panel/90 p-3 shadow">
             {hud}
+          </div>
+        </div>
+      )}
+
+      {footer && (
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 px-3 pb-3 pr-24">
+          <div className="pointer-events-auto rounded-xl border-2 border-panel-border bg-panel/90 p-3 shadow">
+            {footer}
           </div>
         </div>
       )}
