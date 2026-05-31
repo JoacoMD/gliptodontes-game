@@ -21,14 +21,14 @@ export class SearchGameScene extends MinigameSceneBase {
     const cx = GameSize.width / 2;
     this.add
       .text(cx, 200, 'Minijuego búsqueda', {
-        fontFamily: 'Berkshire Swash, Georgia, serif',
+        fontFamily: 'Darumadrop One, Georgia, serif',
         fontSize: '40px',
         color: `#${palette.accent.toString(16).padStart(6, '0')}`,
       })
       .setOrigin(0.5);
     this.counter = this.add
       .text(cx, 300, `${this.found} / ${TOTAL}`, {
-        fontFamily: 'Atkinson Hyperlegible, Inter, sans-serif',
+        fontFamily: 'Bubblegum Sans, Atkinson Hyperlegible, sans-serif',
         fontSize: '36px',
         color: `#${palette.textPrimary.toString(16).padStart(6, '0')}`,
       })
@@ -40,7 +40,7 @@ export class SearchGameScene extends MinigameSceneBase {
       .setInteractive();
     this.add
       .text(cx, GameSize.height - 240, '[DEMO] Encontrar una herramienta', {
-        fontFamily: 'Atkinson Hyperlegible, Inter, sans-serif',
+        fontFamily: 'Bubblegum Sans, Atkinson Hyperlegible, sans-serif',
         fontSize: '20px',
         color: '#ffffff',
       })

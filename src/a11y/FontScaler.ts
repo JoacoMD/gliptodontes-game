@@ -30,6 +30,12 @@ export const FontScaler = {
   fontFamily(simplified: boolean): string {
     return simplified
       ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif'
-      : '"Berkshire Swash", "Georgia", serif';
+      : '"Bubblegum Sans", system-ui, sans-serif';
+  },
+
+  titleFontFamily(simplified: boolean): string {
+    return simplified
+      ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif'
+      : '"Darumadrop One", "Georgia", serif';
   },
 };

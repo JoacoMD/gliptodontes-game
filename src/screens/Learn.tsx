@@ -11,17 +11,21 @@ export function Learn(): React.JSX.Element {
       <ul className="flex flex-1 flex-col gap-4 overflow-y-auto">
         {LEARN_TOPICS.map((t) => (
           <li key={t.id}>
-            <Button
-              size="lg"
-              fullWidth
-              variant="secondary"
+            <button
+              type="button"
               onClick={() => navigate(`/aprender/${t.id}`)}
+              style={{
+                backgroundImage: "url('/assets/ui/gliptodontes-container%201.png')",
+                backgroundSize: '100% 100%',
+                backgroundRepeat: 'no-repeat',
+              }}
+              className="w-full min-h-[96px] px-8 py-5 text-left transition-[transform,filter] duration-200 hover:scale-[1.04] hover:drop-shadow-[0_0_18px_rgba(255,193,107,0.85)] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
             >
               <span className="flex w-full flex-col items-start gap-1">
-                <span className="font-semibold">{t.title}</span>
+                <span className="text-xl font-bold text-text-primary">{t.title}</span>
                 <span className="text-sm font-normal text-text-secondary">{t.summary}</span>
               </span>
-            </Button>
+            </button>
           </li>
         ))}
       </ul>

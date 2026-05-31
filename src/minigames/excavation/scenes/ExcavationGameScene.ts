@@ -147,7 +147,7 @@ export class ExcavationGameScene extends MinigameSceneBase {
     const cx = GameSize.width / 2;
     this.add
       .text(cx, 200, 'Desenterrar la historia', {
-        fontFamily: 'Berkshire Swash, Georgia, serif',
+        fontFamily: 'Darumadrop One, Georgia, serif',
         fontSize: '42px',
         color: `#${Palettes.normal.accent.toString(16).padStart(6, '0')}`,
       })

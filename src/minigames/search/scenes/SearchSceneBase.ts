@@ -148,7 +148,7 @@ export abstract class SearchSceneBase extends MinigameSceneBase {
       .setStrokeStyle(2, palette.panelBorder);
     this.add
       .text(GameSize.width / 2, bgY + 20, `[Placeholder] ${this.sceneDef.title}`, {
-        fontFamily: 'Atkinson Hyperlegible, Inter, sans-serif',
+        fontFamily: 'Bubblegum Sans, Atkinson Hyperlegible, sans-serif',
         fontSize: '18px',
         color: `#${palette.textSecondary.toString(16).padStart(6, '0')}`,
       })
@@ -164,7 +164,7 @@ export abstract class SearchSceneBase extends MinigameSceneBase {
         .setStrokeStyle(2, palette.accent);
       const label = this.add
         .text(x + w / 2, y + h / 2, obj.name, {
-          fontFamily: 'Atkinson Hyperlegible, Inter, sans-serif',
+          fontFamily: 'Bubblegum Sans, Atkinson Hyperlegible, sans-serif',
           fontSize: '14px',
           color: '#ffffff',
           align: 'center',
@@ -172,7 +172,7 @@ export abstract class SearchSceneBase extends MinigameSceneBase {
         .setOrigin(0.5);
       const tick = this.add
         .text(x + w - 12, y + 12, '✓', {
-          fontFamily: 'Atkinson Hyperlegible, Inter, sans-serif',
+          fontFamily: 'Bubblegum Sans, Atkinson Hyperlegible, sans-serif',
           fontSize: '24px',
           color: '#22c55e',
         })

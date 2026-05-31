@@ -17,10 +17,14 @@
   --color-failure: var(--c-failure);
   --color-warning: var(--c-warning);
   --color-focus: var(--c-focus-ring);
+  --color-stroke: var(--c-stroke);
+  --color-text-title: var(--c-text-title);
 
-  --font-decorative: 'Berkshire Swash', 'Georgia', serif;
+  --font-title: 'Darumadrop One', 'Georgia', serif;
+  --font-body: 'Bubblegum Sans', system-ui, sans-serif;
+  --font-decorative: var(--font-active-title, 'Darumadrop One', 'Georgia', serif);
   --font-simplified: 'Atkinson Hyperlegible', 'Inter', system-ui, sans-serif;
-  --font-sans: var(--font-active, var(--font-simplified));
+  --font-sans: var(--font-active-body, var(--font-body));
 }
 
 /* --------- Base CSS vars (default palette) --------- */
@@ -29,6 +33,8 @@
   --c-background: #f3e6c4;
   --c-panel: #d9b380;
   --c-panel-border: #5b3a1e;
+  --c-stroke: #5C3D20;
+  --c-text-title: #FFFFFF;
   --c-text-primary: #3b2410;
   --c-text-secondary: #6b4a2b;
   --c-accent: #b45b1f;
@@ -39,12 +45,7 @@
   --c-focus-ring: #1f6feb;
 }
 
-:root[data-simplified-font='true'] {
-  --font-active: var(--font-simplified);
-}
-:root[data-simplified-font='false'] {
-  --font-active: var(--font-decorative);
-}
+/* font-active-title / font-active-body are defined in fonts.css */
 
 /* --------- Reset and base layout --------- */
 * {
@@ -68,7 +69,7 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   color: var(--c-text-primary);
-  font-family: var(--font-active, var(--font-simplified));
+  font-family: var(--font-active-body, var(--font-body));
   font-size: calc(16px * var(--font-scale));
   -webkit-tap-highlight-color: transparent;
   overflow: hidden;
@@ -84,6 +85,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+button {
+  font-family: var(--font-active-title, var(--font-title));
 }
 
 /* --------- Accessibility helpers --------- */
@@ -121,3 +126,11 @@ body.using-keyboard :is(button, a, input, select, textarea, [tabindex]):focus-vi
   outline-offset: 3px;
   border-radius: 6px;
 }
+
+.title-text {
+  color: var(--c-text-title);
+  -webkit-text-stroke: 3px var(--c-stroke);
+}
+
+
+
