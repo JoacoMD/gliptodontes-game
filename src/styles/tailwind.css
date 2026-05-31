@@ -61,12 +61,23 @@ body,
 }
 
 body {
-  background: var(--c-background);
+  background-color: var(--c-background);
+  background-image: url('/assets/bg/bg-mobile.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: var(--c-text-primary);
   font-family: var(--font-active, var(--font-simplified));
   font-size: calc(16px * var(--font-scale));
   -webkit-tap-highlight-color: transparent;
   overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  body {
+    background-image: url('/assets/bg/bg-desktop.png');
+  }
 }
 
 #root {

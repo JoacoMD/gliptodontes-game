@@ -12,6 +12,7 @@ export interface Settings {
   narratorVolume: number;
   noTimeMode: boolean;
   narratorEnabled: boolean;
+  excavationAssist: boolean;
 }
 
 export interface SaveData {
@@ -29,6 +30,8 @@ export interface Mission {
   /** Phaser scene key that the minigame route mounts. */
   sceneKey: SceneKey;
   iconKey?: string;
+  /** Solo aplica a misiones de excavación. Si no se especifica, se usa el shape default. */
+  fossilShapeId?: string;
 }
 
 export interface LearnTopic {

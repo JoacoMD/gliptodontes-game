@@ -1,19 +1,16 @@
 import { useCallback, useEffect } from 'react';
 import {
   TOOL_DESCRIPTION,
-  TOOL_FOR_LAYER,
   TOOL_LABEL,
   type Tool,
 } from '@/minigames/excavation/types';
 
 export interface ToolDockProps {
   selected: Tool;
-  /** Tool the current layer requires; gets a subtle "suggested" outline. */
-  required?: Tool;
   onSelect: (tool: Tool) => void;
 }
 
-const ORDER: readonly Tool[] = TOOL_FOR_LAYER;
+const ORDER: readonly Tool[] = ['pick', 'chisel', 'brush'] as const;
 
 const KEY_TO_TOOL: Record<string, Tool> = {
   '1': 'pick',
@@ -27,7 +24,7 @@ const ICON: Record<Tool, string> = {
   brush: '🫒', // brush
 };
 
-export function ToolDock({ selected, required, onSelect }: ToolDockProps): React.JSX.Element {
+export function ToolDock({ selected, onSelect }: ToolDockProps): React.JSX.Element {
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
       const tool = KEY_TO_TOOL[e.key];
@@ -54,7 +51,6 @@ export function ToolDock({ selected, required, onSelect }: ToolDockProps): React
     >
       {ORDER.map((tool, i) => {
         const isSelected = selected === tool;
-        const isRequired = required === tool;
         return (
           <button
             key={tool}
@@ -68,7 +64,6 @@ export function ToolDock({ selected, required, onSelect }: ToolDockProps): React
               isSelected
                 ? 'border-panel-border bg-accent text-white'
                 : 'border-panel-border bg-panel text-text-primary hover:bg-accent/20',
-              isRequired && !isSelected ? 'ring-2 ring-accent ring-offset-2' : '',
             ]
               .filter(Boolean)
               .join(' ')}

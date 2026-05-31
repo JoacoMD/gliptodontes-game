@@ -3,136 +3,131 @@ import { ExcavationModel } from '@/minigames/excavation/ExcavationModel';
 
 const tiny = (overrides = {}) =>
   new ExcavationModel({
-    cellsPerLayer: 20,
-    cleanThreshold: 0.95, // 19 / 20
+    phase1CellsTotal: 10,
+    phase2CellsTotal: 20,
+    phase1Threshold: 0.8, // 8 / 10
+    phase2Threshold: 0.9, // 18 / 20
     totalLives: 3,
     timeLimitSec: 10,
     ...overrides,
   });
 
-const rangeArr = (start: number, count: number): number[] =>
+const range = (start: number, count: number): number[] =>
   Array.from({ length: count }, (_, i) => start + i);
 
 describe('ExcavationModel', () => {
-  it('starts idle and becomes playing after start()', () => {
+  it('starts idle in phase 1', () => {
     const m = tiny();
     expect(m.status).toBe('idle');
     m.start();
     expect(m.status).toBe('playing');
-    expect(m.layer).toBe(0);
-    expect(m.layerPct).toBe(0);
+    expect(m.phase).toBe(1);
+    expect(m.progress).toBe(0);
     expect(m.lives).toBe(3);
   });
 
-  it('selectTool changes the selected tool and emits toolChanged', () => {
+  it('phase 1 progresses with near cells; ignores on cells', () => {
+    const m = tiny();
+    m.start();
+    m.cleanCells([1, 2, 3], 'near');
+    expect(m.progress).toBeCloseTo(3 / 10);
+    m.cleanCells([100, 101], 'on');
+    expect(m.progress).toBeCloseTo(3 / 10);
+  });
+
+  it('advances to phase 2 when phase1Threshold is reached', () => {
+    const m = tiny();
+    const onPhase = vi.fn();
+    m.on('phaseAdvanced', onPhase);
+    m.start();
+    m.cleanCells(range(0, 8), 'near'); // 8 / 10 = 0.8
+    expect(m.phase).toBe(2);
+    expect(onPhase).toHaveBeenCalledWith(2);
+    expect(m.progress).toBe(0);
+  });
+
+  it('phase 2 progresses with on cells; ignores near cells', () => {
+    const m = tiny();
+    m.start();
+    m.cleanCells(range(0, 8), 'near');
+    expect(m.phase).toBe(2);
+    m.cleanCells([1, 2, 3], 'on');
+    expect(m.progress).toBeCloseTo(3 / 20);
+    m.cleanCells([200, 201], 'near');
+    expect(m.progress).toBeCloseTo(3 / 20);
+  });
+
+  it('emits success when phase2 reaches its threshold', () => {
+    const m = tiny();
+    const onSuccess = vi.fn();
+    m.on('success', onSuccess);
+    m.start();
+    m.cleanCells(range(0, 8), 'near');
+    m.cleanCells(range(0, 18), 'on');
+    expect(m.status).toBe('success');
+    expect(onSuccess).toHaveBeenCalledTimes(1);
+  });
+
+  it('damageOnce decrements lives and fails at zero', () => {
+    const m = tiny();
+    const onFailure = vi.fn();
+    m.on('failure', onFailure);
+    m.start();
+    m.damageOnce();
+    m.damageOnce();
+    expect(m.lives).toBe(1);
+    expect(m.status).toBe('playing');
+    m.damageOnce();
+    expect(m.lives).toBe(0);
+    expect(m.status).toBe('failure');
+    expect(onFailure).toHaveBeenCalledTimes(1);
+  });
+
+  it('tick decrements time and fails at zero', () => {
+    const m = tiny({ timeLimitSec: 1 });
+    m.start();
+    m.tick(0.5);
+    expect(m.timeLeft).toBeCloseTo(0.5);
+    m.tick(0.6);
+    expect(m.timeLeft).toBe(0);
+    expect(m.status).toBe('failure');
+  });
+
+  it('does not tick when timeLimitSec is null', () => {
+    const m = tiny({ timeLimitSec: null });
+    m.start();
+    m.tick(99);
+    expect(m.status).toBe('playing');
+    expect(m.timed).toBe(false);
+  });
+
+  it('ignores cleanCells and damageOnce when not playing', () => {
+    const m = tiny();
+    m.cleanCells([1, 2, 3], 'near');
+    m.damageOnce();
+    expect(m.progress).toBe(0);
+    expect(m.lives).toBe(3);
+  });
+
+  it('reset returns model to phase 1 idle', () => {
+    const m = tiny();
+    m.start();
+    m.cleanCells(range(0, 8), 'near');
+    m.cleanCells([1], 'on');
+    m.damageOnce();
+    m.reset();
+    expect(m.status).toBe('idle');
+    expect(m.phase).toBe(1);
+    expect(m.progress).toBe(0);
+    expect(m.lives).toBe(3);
+  });
+
+  it('selectTool emits toolChanged', () => {
     const m = tiny();
     const onChange = vi.fn();
     m.on('toolChanged', onChange);
     m.selectTool('chisel');
     expect(m.selectedTool).toBe('chisel');
     expect(onChange).toHaveBeenCalledWith('chisel');
-  });
-
-  it('cleanCells dedupes and updates progress', () => {
-    const m = tiny();
-    m.start();
-    m.cleanCells([1, 2, 3]);
-    expect(m.layerPct).toBeCloseTo(3 / 20);
-    m.cleanCells([3, 4]); // 3 is dup
-    expect(m.layerPct).toBeCloseTo(4 / 20);
-  });
-
-  it('advances layers after reaching threshold and wins after layer 3', () => {
-    const m = tiny();
-    const onAdvanced = vi.fn();
-    const onSuccess = vi.fn();
-    m.on('layerAdvanced', onAdvanced);
-    m.on('success', onSuccess);
-    m.start();
-    // Layer 0 → fill 19 of 20 cells to cross 95%
-    m.cleanCells(rangeArr(0, 19));
-    expect(m.layer).toBe(1);
-    expect(m.layerPct).toBe(0);
-    expect(onAdvanced).toHaveBeenCalledWith(1);
-    // Layer 1
-    m.cleanCells(rangeArr(0, 19));
-    expect(m.layer).toBe(2);
-    // Layer 2 → wins
-    m.cleanCells(rangeArr(0, 19));
-    expect(m.status).toBe('success');
-    expect(onSuccess).toHaveBeenCalledOnce();
-  });
-
-  it('damageOnce reduces lives and emits failure at 0', () => {
-    const m = tiny({ totalLives: 2 });
-    const onFail = vi.fn();
-    m.on('failure', onFail);
-    m.start();
-    m.damageOnce();
-    expect(m.lives).toBe(1);
-    m.damageOnce();
-    expect(m.lives).toBe(0);
-    expect(m.status).toBe('failure');
-    expect(onFail).toHaveBeenCalledOnce();
-  });
-
-  it('does not act once already finished', () => {
-    const m = tiny();
-    m.start();
-    // Force a win.
-    m.cleanCells(rangeArr(0, 19));
-    m.cleanCells(rangeArr(0, 19));
-    m.cleanCells(rangeArr(0, 19));
-    expect(m.status).toBe('success');
-    const onLives = vi.fn();
-    m.on('lives', onLives);
-    m.damageOnce();
-    expect(onLives).not.toHaveBeenCalled();
-  });
-
-  it('tick decrements time and fails at 0', () => {
-    const m = tiny({ timeLimitSec: 2 });
-    m.start();
-    m.tick(1.5);
-    expect(m.timeLeft).toBeCloseTo(0.5);
-    m.tick(1);
-    expect(m.timeLeft).toBe(0);
-    expect(m.status).toBe('failure');
-  });
-
-  it('no-time mode disables the timer', () => {
-    const m = tiny({ timeLimitSec: null });
-    m.start();
-    m.tick(9999);
-    expect(m.status).toBe('playing');
-    expect(m.timed).toBe(false);
-  });
-
-  it('reset returns to a clean initial state', () => {
-    const m = tiny();
-    m.start();
-    m.cleanCells([1, 2, 3]);
-    m.damageOnce();
-    m.reset();
-    expect(m.status).toBe('idle');
-    expect(m.layer).toBe(0);
-    expect(m.layerPct).toBe(0);
-    expect(m.lives).toBe(3);
-    expect(m.selectedTool).toBe('pick');
-  });
-
-  it('exposes a serializable state snapshot via .state', () => {
-    const m = tiny({ totalLives: 5, timeLimitSec: 30 });
-    m.start();
-    const s = m.state;
-    expect(s).toMatchObject({
-      status: 'playing',
-      layer: 0,
-      layerPct: 0,
-      lives: 5,
-      timeLeft: 30,
-      timed: true,
-      selectedTool: 'pick',
-    });
   });
 });

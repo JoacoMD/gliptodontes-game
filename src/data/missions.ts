@@ -15,6 +15,7 @@ export const MISSIONS: Mission[] = [
     description: 'Excava con cuidado y descubre un fósil completo.',
     route: RoutePaths.MinigameExcavation,
     sceneKey: SceneKeys.MinigameExcavation,
+    fossilShapeId: 'gliptodonte-caparazon',
   },
   {
     id: 'vienen-o-van',

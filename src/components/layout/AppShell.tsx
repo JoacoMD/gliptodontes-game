@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom';
  */
 export function AppShell(): React.JSX.Element {
   return (
-    <div className="relative flex h-full w-full items-center justify-center bg-background">
+    <div className="relative flex h-full w-full items-center justify-center">
       <a
         href="#main"
         className="skip-link"
@@ -15,7 +15,7 @@ export function AppShell(): React.JSX.Element {
       </a>
       <main
         id="main"
-        className="relative h-full w-full max-h-[100dvh] max-w-[min(100vw,calc(100dvh*9/16))] overflow-hidden border-2 border-panel-border bg-panel text-text-primary shadow-xl sm:rounded-2xl"
+        className="relative h-full w-full max-h-[100dvh] max-w-[min(100vw,calc(100dvh*9/16))] overflow-hidden border-2 border-panel-border bg-panel/60 text-text-primary shadow-xl sm:rounded-2xl"
         style={{ aspectRatio: '9 / 16' }}
       >
         <Outlet />
