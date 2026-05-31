@@ -62,13 +62,13 @@ export function MainMenu(): React.JSX.Element {
         type="button"
         aria-label="Ajustes"
         onClick={() => navigate(RoutePaths.Settings)}
-        className="absolute bottom-4 right-4 h-16 w-16 transition-[transform,filter] duration-200 hover:scale-110 hover:drop-shadow-[0_0_16px_rgba(255,193,107,0.9)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus rounded-full"
+        className="absolute bottom-6 right-4 h-16 w-16 transition-[transform,filter] duration-200 hover:scale-110 hover:drop-shadow-[0_0_16px_rgba(255,193,107,0.9)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus rounded-full"
       >
         <img
           src="/assets/ui/gliptodontes-settings 1.png"
           alt=""
           aria-hidden
-          className="h-full w-full select-none object-contain"
+          className="h-full w-full select-none object-contain scale-175"
           draggable={false}
         />
       </button>

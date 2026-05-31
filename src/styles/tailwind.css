@@ -129,8 +129,12 @@ body.using-keyboard :is(button, a, input, select, textarea, [tabindex]):focus-vi
 
 .title-text {
   color: var(--c-text-title);
-  -webkit-text-stroke: 3px var(--c-stroke);
+  -webkit-text-stroke: 4px var(--c-stroke);
 }
 
-
-
+@media (min-width: 768px) {
+  .main-title {
+    scale: 2;
+    margin-top: 5em;
+  }
+}

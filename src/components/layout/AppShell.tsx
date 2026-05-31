@@ -15,7 +15,7 @@ export function AppShell(): React.JSX.Element {
       </a>
       <main
         id="main"
-        className="relative h-full w-full max-h-[100dvh] max-w-[min(100vw,calc(100dvh*9/16))] overflow-hidden border-2 border-panel-border bg-panel/60 text-text-primary shadow-xl sm:rounded-2xl"
+        className="relative h-full w-full max-h-[100dvh] max-w-[min(100vw,calc(100dvh*14/16))] overflow-hidden text-text-primary"
         style={{ aspectRatio: '9 / 16' }}
       >
         <Outlet />
