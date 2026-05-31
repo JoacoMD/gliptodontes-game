@@ -32,7 +32,7 @@ export function SettingsPage(): React.JSX.Element {
       aria-label="Ajustes"
       className="flex h-full w-full flex-col gap-2 overflow-y-auto p-6"
     >
-      <h1 className="mb-4 text-center font-decorative text-4xl text-accent">Ajustes</h1>
+      <h1 className="mb-4 text-center font-decorative text-7xl title-text">Ajustes</h1>
 
       <SegmentedControl
         label="Tamaño de fuente"
