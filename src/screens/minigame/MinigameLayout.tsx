@@ -98,10 +98,8 @@ export function MinigameLayout({
       )}
 
       {footer && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 px-3 pb-3 pr-24">
-          <div className="pointer-events-auto rounded-xl border-2 border-panel-border bg-panel/90 p-3 shadow">
-            {footer}
-          </div>
+        <div className="pointer-events-none absolute inset-x-0 bottom-24 z-20 px-3">
+          <div className="pointer-events-auto">{footer}</div>
         </div>
       )}
 

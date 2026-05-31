@@ -1,14 +1,65 @@
-/* Las @font-face reales se añaden en /public/assets/fonts/. Mientras tanto usamos
-   fuentes del sistema con perfiles "decorativo" (serif) y "simplificado" (sans). */
+@font-face {
+  font-family: 'Darumadrop One';
+  src: url('/assets/fonts/Darumadrop_One/DarumadropOne-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bubblegum Sans';
+  src: url('/assets/fonts/Bubblegum_Sans/BubblegumSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  src: url('/assets/fonts/Atkinson_Hyperlegible/AtkinsonHyperlegible-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  src: url('/assets/fonts/Atkinson_Hyperlegible/AtkinsonHyperlegible-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  src: url('/assets/fonts/Atkinson_Hyperlegible/AtkinsonHyperlegible-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  src: url('/assets/fonts/Atkinson_Hyperlegible/AtkinsonHyperlegible-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
 
 :root {
-  --font-decorative: 'Berkshire Swash', 'Georgia', 'Times New Roman', serif;
+  --font-title: 'Darumadrop One', 'Georgia', serif;
+  --font-body: 'Bubblegum Sans', system-ui, -apple-system, sans-serif;
   --font-simplified: 'Atkinson Hyperlegible', 'Inter', system-ui, -apple-system, sans-serif;
+
+  --font-decorative: var(--font-title);
+  --font-active-title: var(--font-title);
+  --font-active-body: var(--font-body);
 }
 
 :root[data-simplified-font='true'] {
+  --font-active-title: var(--font-simplified);
+  --font-active-body: var(--font-simplified);
   --font-active: var(--font-simplified);
 }
 :root[data-simplified-font='false'] {
-  --font-active: var(--font-decorative);
+  --font-active-title: var(--font-title);
+  --font-active-body: var(--font-body);
+  --font-active: var(--font-body);
 }

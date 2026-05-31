@@ -30,4 +30,11 @@ describe('SettingsStore', () => {
     SettingsStore.set('fontScale', DEFAULT_SETTINGS.fontScale);
     expect(calls).toBe(0);
   });
+
+  it('exposes excavationAssist defaulting to false', () => {
+    SettingsStore.reset();
+    expect(SettingsStore.getKey('excavationAssist')).toBe(false);
+    SettingsStore.set('excavationAssist', true);
+    expect(SettingsStore.getKey('excavationAssist')).toBe(true);
+  });
 });

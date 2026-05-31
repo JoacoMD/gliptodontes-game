@@ -4,34 +4,36 @@ import { ExcavationGameScene } from '@/minigames/excavation/scenes/ExcavationGam
 import { ExcavationHUD } from '@/minigames/excavation/components/ExcavationHUD';
 import { ToolDock } from '@/minigames/excavation/components/ToolDock';
 import { useExcavationGame } from '@/minigames/excavation/hooks/useExcavationGame';
-import { TOOL_FOR_LAYER } from '@/minigames/excavation/types';
+import { MISSIONS } from '@/data/missions';
+import { getFossilShape } from '@/data/fossilShapes';
 
-// Stable module-level reference: this array MUST NOT be recreated on every
-// render, or PhaserGame's mount effect would re-instantiate the game on each
-// HUD state update and the model would restart in a loop.
+const MISSION_ID = 'desenterrar-la-historia';
+
+// Stable module-level reference: este array NO debe recrearse en cada render,
+// o el efecto de PhaserGame reinstanciaría el juego.
 const EXCAVATION_SCENES = [ExcavationGameScene];
+
+const MISSION = MISSIONS.find((m) => m.id === MISSION_ID);
+const FOSSIL_SHAPE = getFossilShape(MISSION?.fossilShapeId);
 
 export function ExcavationPage(): React.JSX.Element {
   const { state, selectTool } = useExcavationGame();
-  const required = TOOL_FOR_LAYER[state.layer];
 
   return (
     <MinigameLayout
       sceneKey={SceneKeys.MinigameExcavation}
       scenes={EXCAVATION_SCENES}
-      missionId="desenterrar-la-historia"
+      missionId={MISSION_ID}
       didYouKnow="Los paleontólogos pueden tardar años en desenterrar un fósil si es un esqueleto grande."
-      hud={<ExcavationHUD state={state} />}
-      footer={<ToolDock selected={state.selectedTool} required={required} onSelect={selectTool} />}
+      hud={<ExcavationHUD state={state} fossilDisplayName={FOSSIL_SHAPE.displayName} />}
+      footer={<ToolDock selected={state.selectedTool} onSelect={selectTool} />}
       helpContent={{
         title: '¿Cómo jugar?',
         body: [
-          'El fósil está oculto bajo tres capas: tierra, roca y arena.',
-          'Capa 1 → pico. Capa 2 → cincel. Capa 3 → pincel.',
-          'Elegí una herramienta y mantené presionado sobre el fósil para limpiar.',
-          'Cuando hayas limpiado el 95 % de una capa, avanzás a la siguiente.',
-          'Si usás la herramienta incorrecta perdés una vida. Tenés 3.',
-          'Tenés 2 minutos (o activá el modo sin tiempo en Ajustes).',
+          'Tu trabajo se divide en dos fases.',
+          'Fase 1 — Hallar el contorno: usá el pico para retirar la tierra lejos del fósil y el cincel para limpiar la tierra cerca, hasta que se note la silueta del hueso. Si golpeás el fósil con el pico, lo rompés y perdés una vida.',
+          'Fase 2 — Revelar el fósil: cuando termines el contorno, pasás al pincel para descubrir el hueso sin dañarlo.',
+          'Tenés 3 vidas y 2 minutos para las dos fases.',
         ],
         ctaLabel: 'Jugar',
       }}

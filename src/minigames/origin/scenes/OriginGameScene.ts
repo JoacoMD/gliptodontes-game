@@ -17,7 +17,7 @@ export class OriginGameScene extends MinigameSceneBase {
     const q = ORIGIN_QUIZ[0]!;
     this.add
       .text(cx, 220, q.prompt, {
-        fontFamily: 'Berkshire Swash, Georgia, serif',
+        fontFamily: 'Darumadrop One, Georgia, serif',
         fontSize: '32px',
         color: `#${palette.accent.toString(16).padStart(6, '0')}`,
         align: 'center',
@@ -33,7 +33,7 @@ export class OriginGameScene extends MinigameSceneBase {
         .setInteractive();
       this.add
         .text(cx, y, opt.label, {
-          fontFamily: 'Atkinson Hyperlegible, Inter, sans-serif',
+          fontFamily: 'Bubblegum Sans, Atkinson Hyperlegible, sans-serif',
           fontSize: '24px',
           color: '#ffffff',
         })

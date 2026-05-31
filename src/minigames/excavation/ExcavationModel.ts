@@ -1,28 +1,34 @@
-import { TOOL_FOR_LAYER, type ExcavationState, type LayerIndex, type Tool } from './types';
+import type { ExcavationState, ExcavationStatus, Phase, Tool } from './types';
 
 export interface ExcavationConfig {
-  /** Number of logical cells per layer used to track progress. */
-  cellsPerLayer: number;
-  /** Fraction of cells that must be cleaned to advance a layer (0..1). */
-  cleanThreshold: number;
+  /** Total de celdas de la banda `near` (delimitan el contorno del fósil). */
+  phase1CellsTotal: number;
+  /** Total de celdas que pertenecen al fósil (zona `on`). */
+  phase2CellsTotal: number;
+  /** Fracción de `near` para terminar la fase 1 (0..1). */
+  phase1Threshold: number;
+  /** Fracción de `on` para ganar el minijuego (0..1). */
+  phase2Threshold: number;
   totalLives: number;
-  /** Time limit in seconds, or null when noTimeMode is on. */
+  /** Límite de tiempo total en segundos, o null si noTimeMode. */
   timeLimitSec: number | null;
 }
 
 export const DEFAULT_EXCAVATION_CONFIG: ExcavationConfig = {
-  cellsPerLayer: 2400,
-  cleanThreshold: 0.95,
+  phase1CellsTotal: 1,
+  phase2CellsTotal: 1,
+  phase1Threshold: 0.8,
+  phase2Threshold: 0.9,
   totalLives: 3,
   timeLimitSec: 120,
 };
 
 type EventName =
   | 'progress'
-  | 'layerAdvanced'
   | 'lives'
   | 'time'
   | 'toolChanged'
+  | 'phaseAdvanced'
   | 'success'
   | 'failure'
   | 'start'
@@ -32,28 +38,28 @@ type EventName =
 
 type Listener<T = unknown> = (value: T) => void;
 
-const TOTAL_LAYERS = 3 as const;
+/** Indica qué tipo de celda se está reportando al modelo. */
+export type CleanZone = 'near' | 'on';
 
 /**
- * Pure TypeScript model for the excavation minigame.
+ * Modelo TS puro del minijuego en dos fases.
  *
- * - The model is unaware of the canvas or coordinates: the scene decides what
- *   "cell ids" mean and is the only piece that knows whether the tool matches
- *   the layer (the model trusts callers).
- * - `cleanCells(ids)` just counts: dedups via Sets per layer so the same cell
- *   touched twice doesn't inflate progress.
- * - `damageOnce()` is called by the scene at most once per press; the model
- *   does no debouncing itself.
+ * - Fase 1: el jugador delimita el contorno limpiando la banda `near`.
+ * - Fase 2: el jugador revela el fósil cepillando la zona `on`.
+ *
+ * El modelo es agnóstico de coordenadas: la escena le pasa ids de celdas
+ * etiquetados por zona (`near` o `on`) y el modelo dedupea + contabiliza.
  */
 export class ExcavationModel {
   readonly config: ExcavationConfig;
 
   private _status: ExcavationStatus = 'idle';
-  private _layer: LayerIndex = 0;
-  private _cleanedByLayer: Set<number>[] = [new Set(), new Set(), new Set()];
+  private _phase: Phase = 1;
+  private _cleanedNear = new Set<number>();
+  private _cleanedOn = new Set<number>();
   private _lives: number;
   private _timeLeft: number;
-  private _selectedTool: Tool = TOOL_FOR_LAYER[0]!;
+  private _selectedTool: Tool = 'pick';
   private listeners = new Map<EventName, Set<Listener>>();
 
   constructor(config: Partial<ExcavationConfig> = {}) {
@@ -62,37 +68,29 @@ export class ExcavationModel {
     this._timeLeft = this.config.timeLimitSec ?? 0;
   }
 
-  // ---------------- Getters ----------------
+  // -------- Getters --------
+  get status(): ExcavationStatus { return this._status; }
+  get phase(): Phase { return this._phase; }
+  get lives(): number { return this._lives; }
+  get timeLeft(): number { return this._timeLeft; }
+  get selectedTool(): Tool { return this._selectedTool; }
+  get timed(): boolean { return this.config.timeLimitSec !== null; }
 
-  get status(): ExcavationStatus {
-    return this._status;
+  /** Progreso de la fase actual (0..1). */
+  get progress(): number {
+    if (this._phase === 1) {
+      if (this.config.phase1CellsTotal <= 0) return 0;
+      return Math.min(1, this._cleanedNear.size / this.config.phase1CellsTotal);
+    }
+    if (this.config.phase2CellsTotal <= 0) return 0;
+    return Math.min(1, this._cleanedOn.size / this.config.phase2CellsTotal);
   }
-  get layer(): LayerIndex {
-    return this._layer;
-  }
-  get lives(): number {
-    return this._lives;
-  }
-  get timeLeft(): number {
-    return this._timeLeft;
-  }
-  get selectedTool(): Tool {
-    return this._selectedTool;
-  }
-  get requiredTool(): Tool {
-    return TOOL_FOR_LAYER[this._layer]!;
-  }
-  get layerPct(): number {
-    return Math.min(1, this._cleanedByLayer[this._layer]!.size / this.config.cellsPerLayer);
-  }
-  get timed(): boolean {
-    return this.config.timeLimitSec !== null;
-  }
+
   get state(): ExcavationState {
     return {
       status: this._status,
-      layer: this._layer,
-      layerPct: this.layerPct,
+      phase: this._phase,
+      progress: this.progress,
       lives: this._lives,
       timeLeft: this._timeLeft,
       timed: this.timed,
@@ -100,8 +98,7 @@ export class ExcavationModel {
     };
   }
 
-  // ---------------- Pub/sub ----------------
-
+  // -------- Pub/sub --------
   on<T = unknown>(event: EventName, listener: Listener<T>): void {
     if (!this.listeners.has(event)) this.listeners.set(event, new Set());
     this.listeners.get(event)!.add(listener as Listener);
@@ -113,8 +110,7 @@ export class ExcavationModel {
     this.listeners.get(event)?.forEach((l) => l(payload));
   }
 
-  // ---------------- Lifecycle ----------------
-
+  // -------- Lifecycle --------
   start(): void {
     if (this._status === 'paused') {
       this._status = 'playing';
@@ -125,28 +121,24 @@ export class ExcavationModel {
     this._status = 'playing';
     this.emit('start');
   }
-
   pause(): void {
     if (this._status === 'playing') {
       this._status = 'paused';
       this.emit('pause');
     }
   }
-
   resume(): void {
     if (this._status === 'paused') {
       this._status = 'playing';
       this.emit('resume');
     }
   }
-
   reset(): void {
     this.resetState();
     this.emit('reset');
   }
 
-  // ---------------- Gameplay actions ----------------
-
+  // -------- Gameplay --------
   selectTool(tool: Tool): void {
     if (this._selectedTool === tool) return;
     this._selectedTool = tool;
@@ -154,12 +146,15 @@ export class ExcavationModel {
   }
 
   /**
-   * Marks the given cell ids as cleaned in the current layer.
-   * Returns the number of newly cleaned cells (deduped).
+   * Reporta celdas limpiadas en una zona específica. `near` sólo cuenta en
+   * fase 1, `on` sólo en fase 2. Celdas fuera de la fase activa se ignoran.
    */
-  cleanCells(ids: Iterable<number>): number {
+  cleanCells(ids: Iterable<number>, zone: CleanZone): number {
     if (this._status !== 'playing') return 0;
-    const set = this._cleanedByLayer[this._layer]!;
+    if (this._phase === 1 && zone !== 'near') return 0;
+    if (this._phase === 2 && zone !== 'on') return 0;
+
+    const set = zone === 'near' ? this._cleanedNear : this._cleanedOn;
     let added = 0;
     for (const id of ids) {
       if (!set.has(id)) {
@@ -168,8 +163,12 @@ export class ExcavationModel {
       }
     }
     if (added === 0) return 0;
-    this.emit('progress', this.layerPct);
-    if (this.layerPct >= this.config.cleanThreshold) this.advanceLayer();
+    this.emit('progress', this.progress);
+    if (this._phase === 1 && this.progress >= this.config.phase1Threshold) {
+      this.advanceToPhase2();
+    } else if (this._phase === 2 && this.progress >= this.config.phase2Threshold) {
+      this.win();
+    }
     return added;
   }
 
@@ -188,37 +187,31 @@ export class ExcavationModel {
     if (this._timeLeft <= 0) this.lose();
   }
 
-  // ---------------- Internal transitions ----------------
-
-  private advanceLayer(): void {
-    if (this._layer < TOTAL_LAYERS - 1) {
-      this._layer = (this._layer + 1) as LayerIndex;
-      this.emit('layerAdvanced', this._layer);
-    } else {
-      this.win();
-    }
+  // -------- Internal --------
+  private advanceToPhase2(): void {
+    if (this._phase !== 1) return;
+    this._phase = 2;
+    this.emit('phaseAdvanced', this._phase);
+    // Reemite el progreso de la fase nueva (vuelve a 0) para que el HUD se sincronice.
+    this.emit('progress', this.progress);
   }
-
   private win(): void {
     if (this._status === 'success' || this._status === 'failure') return;
     this._status = 'success';
     this.emit('success');
   }
-
   private lose(): void {
     if (this._status === 'success' || this._status === 'failure') return;
     this._status = 'failure';
     this.emit('failure');
   }
-
   private resetState(): void {
     this._status = 'idle';
-    this._layer = 0;
-    this._cleanedByLayer = [new Set(), new Set(), new Set()];
+    this._phase = 1;
+    this._cleanedNear = new Set();
+    this._cleanedOn = new Set();
     this._lives = this.config.totalLives;
     this._timeLeft = this.config.timeLimitSec ?? 0;
-    this._selectedTool = TOOL_FOR_LAYER[0]!;
+    this._selectedTool = 'pick';
   }
 }
-
-type ExcavationStatus = ExcavationState['status'];

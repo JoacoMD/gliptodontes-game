@@ -83,6 +83,12 @@ export function SettingsPage(): React.JSX.Element {
         checked={settings.narratorEnabled}
         onChange={(v) => SettingsStore.set('narratorEnabled', v)}
       />
+      <Toggle
+        label="Mostrar silueta del fósil en excavación"
+        description="Si el minijuego de excavación se siente muy difícil, muestra una silueta tenue del fósil bajo la tierra."
+        checked={settings.excavationAssist}
+        onChange={(v) => SettingsStore.set('excavationAssist', v)}
+      />
 
       <Button
         variant="ghost"

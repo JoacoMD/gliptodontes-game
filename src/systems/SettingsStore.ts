@@ -11,6 +11,7 @@ export const DEFAULT_SETTINGS: Readonly<Settings> = Object.freeze({
   narratorVolume: 1,
   noTimeMode: false,
   narratorEnabled: true,
+  excavationAssist: false,
 });
 
 const isBrowser = (): boolean =>

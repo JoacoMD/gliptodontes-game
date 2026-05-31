@@ -15,7 +15,7 @@ export class ARGameScene extends MinigameSceneBase {
     const cx = GameSize.width / 2;
     this.add
       .text(cx, 220, 'Minijuego AR', {
-        fontFamily: 'Berkshire Swash, Georgia, serif',
+        fontFamily: 'Darumadrop One, Georgia, serif',
         fontSize: '40px',
         color: `#${palette.accent.toString(16).padStart(6, '0')}`,
       })
@@ -25,7 +25,7 @@ export class ARGameScene extends MinigameSceneBase {
       .setStrokeStyle(4, palette.panelBorder);
     this.add
       .text(cx, GameSize.height / 2, '(Cámara — stub)', {
-        fontFamily: 'Atkinson Hyperlegible, Inter, sans-serif',
+        fontFamily: 'Bubblegum Sans, Atkinson Hyperlegible, sans-serif',
         fontSize: '22px',
         color: `#${palette.textSecondary.toString(16).padStart(6, '0')}`,
       })
@@ -37,7 +37,7 @@ export class ARGameScene extends MinigameSceneBase {
       .setInteractive();
     this.add
       .text(cx, GameSize.height - 240, 'Identificar', {
-        fontFamily: 'Atkinson Hyperlegible, Inter, sans-serif',
+        fontFamily: 'Bubblegum Sans, Atkinson Hyperlegible, sans-serif',
         fontSize: '24px',
         color: '#ffffff',
       })

@@ -1,9 +1,10 @@
 import { ProgressBar } from '@/components/ui/ProgressBar';
-import { TOOL_LABEL } from '@/minigames/excavation/types';
 import type { ExcavationState } from '@/minigames/excavation/types';
 
 export interface ExcavationHUDProps {
   state: ExcavationState;
+  /** Nombre legible del fósil que se está desenterrando. */
+  fossilDisplayName: string;
 }
 
 function formatTime(seconds: number): string {
@@ -12,23 +13,29 @@ function formatTime(seconds: number): string {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 }
 
-export function ExcavationHUD({ state }: ExcavationHUDProps): React.JSX.Element {
-  const layerHuman = state.layer + 1;
-  const pct = Math.round(state.layerPct * 100);
-  const required = TOOL_LABEL[
-    state.layer === 0 ? 'pick' : state.layer === 1 ? 'chisel' : 'brush'
-  ];
+const PHASE_LABEL: Record<1 | 2, string> = {
+  1: 'Fase 1 · Hallar el contorno',
+  2: 'Fase 2 · Revelar el fósil',
+};
+
+export function ExcavationHUD({
+  state,
+  fossilDisplayName,
+}: ExcavationHUDProps): React.JSX.Element {
+  const pct = Math.round(state.progress * 100);
+  const phaseLabel = PHASE_LABEL[state.phase];
 
   return (
     <div className="flex flex-col gap-2 text-text-primary" aria-label="Estado del minijuego">
       <div className="flex items-baseline justify-between gap-3">
         <span className="text-sm font-semibold uppercase tracking-wide text-text-secondary">
-          Capa {layerHuman} / 3
+          {fossilDisplayName}
         </span>
-        <span className="text-sm text-text-secondary">Herramienta correcta: {required}</span>
+        <span className="text-sm text-text-secondary">{pct}%</span>
       </div>
 
-      <ProgressBar value={state.layerPct} label={`Avance de la capa ${layerHuman}`} />
+      <ProgressBar value={state.progress} label={phaseLabel} />
+      <span className="text-xs text-text-secondary">{phaseLabel}</span>
 
       <div className="flex items-center justify-between gap-3 text-base">
         <span
@@ -42,9 +49,6 @@ export function ExcavationHUD({ state }: ExcavationHUDProps): React.JSX.Element 
               {'♥'.repeat(3 - state.lives)}
             </span>
           )}
-        </span>
-        <span className="text-text-secondary tabular-nums" aria-live="off">
-          {pct}%
         </span>
         {state.timed && (
           <span
