@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRef } from 'react';
+import { useMemo } from 'react';
 
 import { HelpButton } from '@/components/ui/HelpButton';
 import { Button } from '@/components/ui/Button';
@@ -13,32 +14,104 @@ import { ResultModal } from '@/components/modals/ResultModal';
 
 import { StreetViewPanel } from '@/minigames/ar/StreetViewPanel';
 
+import { FossilOverlay } from '@/minigames/ar/FossilOverlay';
+
 import type { MinigameResult } from '@/types';
 import { useNavigate } from 'react-router-dom';
 import { RoutePaths } from '@/config/Constants';
+
+import { fossilsAR } from '@/data/fossilsAR';
+
+import { calculateBearing } from '@/minigames/ar/util/calculateBearing';
+import { calculateDistance } from '@/minigames/ar/util/calculateDistance';
+import { closeEnough } from '@/minigames/ar/util/closeEnough';
 
 export function ARPage(): React.JSX.Element {
   const [helpOpen, setHelpOpen] = useState(true);
   const [result, setResult] = useState<MinigameResult | null>(null);
 
+  const [heading, setHeading] = useState(0);
+  const [pitch, setPitch] = useState(0);
+  const [playerPosition, setPlayerPosition] =
+    useState<google.maps.LatLng | null>(null);
+
+  const visibleFossils = playerPosition == null ? [] : (() => {
+    const playerLat = playerPosition.lat();
+    const playerLng = playerPosition.lng();
+
+    return fossilsAR.map((fossil) => ({
+      ...fossil,
+      heading: calculateBearing(
+        playerLat,
+        playerLng,
+        fossil.lat,
+        fossil.lng,
+      ),
+      distance: calculateDistance(
+        playerLat,
+        playerLng,
+        fossil.lat,
+        fossil.lng,
+      ),
+    }));
+  })();
+
+  const fossilsWithRuntimeData = useMemo(() => {
+    if (!playerPosition) return [];
+
+    return fossilsAR.map((fossil) => {
+      const headingToFossil = calculateBearing(
+        playerPosition.lat(),
+        playerPosition.lng(),
+        fossil.lat,
+        fossil.lng,
+      );
+
+      const distance = calculateDistance(
+        playerPosition.lat(),
+        playerPosition.lng(),
+        fossil.lat,
+        fossil.lng,
+      );
+
+      return {
+        ...fossil,
+        heading: headingToFossil,
+        distance,
+      };
+    });
+  }, [playerPosition]);
+
   const identifyFossil = (): void => {
-    // Más adelante:
-    // - verificar heading
-    // - verificar posición
-    // - verificar si el fósil está visible
+    if (!playerPosition) return;
+
+    const target = fossilsWithRuntimeData.find((fossil) =>
+      closeEnough(
+        heading,
+        fossil.heading,
+        fossil.distance,
+        50, // distancia en metros
+        6,  // precisión angular
+      ),
+    );
+
+    if (!target) {
+      setResult({
+        variant: 'failure',
+        title: 'Nada aquí',
+        body: 'No estás mirando ningún fósil lo suficientemente cerca.',
+        primaryCta: { label: 'Seguir buscando', action: 'retry' },
+      });
+      return;
+    }
 
     setResult({
       variant: 'success',
       title: '¡Bien hecho!',
-      body: 'Identificaste un gliptodonte correctamente.',
-      primaryCta: {
-        label: 'Continuar',
-        action: 'next',
-      },
-      secondaryCta: {
-        label: 'Volver a jugar',
-        action: 'retry',
-      },
+      body: `Identificaste correctamente el ${target.name}.`,
+      didYouKnow: target.funfact,
+      primaryCta: { label: 'Continuar', action: 'next' },
+      secondaryCta: { label: 'Volver al menu', action: 'menu' },
     });
   };
 
@@ -60,21 +133,46 @@ export function ARPage(): React.JSX.Element {
     panorama: google.maps.StreetViewPanorama,
   ) => {
     panoramaRef.current = panorama;
-    panorama.addListener('pov_changed', () => {
+
+    const update = () => {
       const pov = panorama.getPov();
 
-      console.log(pov.heading);
-      console.log(pov.pitch);
-    });
+      setHeading(pov.heading);
+      setPitch(pov.pitch);
+
+      setPlayerPosition(
+        panorama.getPosition() ?? null,
+      );
+    };
+
+    update();
+
+    panorama.addListener(
+      'pov_changed',
+      update,
+    );
+
+    panorama.addListener(
+      'position_changed',
+      update,
+    );
   };
 
-  const heading = panoramaRef.current?.getPov().heading;
-  const position = panoramaRef.current?.getPosition;
+  // const heading = panoramaRef.current?.getPov().heading;
+  // const position = panoramaRef.current?.getPosition;
 
   return (
-    <section className="relative h-full w-full overflow-hidden">
+    <section className="relative h-full w-full z-0 overflow-hidden">
       <StreetViewPanel onReady={handleStreetViewReady} />
 
+      <div className="absolute inset-0 z-10 pointer-events-none">
+        <FossilOverlay
+          heading={heading}
+          pitch={pitch}
+          fossils={visibleFossils}
+        />
+
+      </div>
       {/* Botón salir */}
       <Button
         variant="ghost"
@@ -106,6 +204,7 @@ export function ARPage(): React.JSX.Element {
         id="ar-result"
         open={result !== null}
         result={result}
+        didYouKnow={result?.didYouKnow}
         onAction={() => setResult(null)}
       />
     </section>
