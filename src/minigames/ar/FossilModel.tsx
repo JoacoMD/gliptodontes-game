@@ -16,3 +16,7 @@ export function FossilModel({ fossil }: Props) {
     />
   );
 }
+
+useGLTF.preload(
+  '/assets/models3D/gliptodonte3D.glb',
+);

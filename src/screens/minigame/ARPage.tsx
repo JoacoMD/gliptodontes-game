@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useMemo } from 'react';
+import { useEffect } from 'react';
 
 import { HelpButton } from '@/components/ui/HelpButton';
 import { Button } from '@/components/ui/Button';
@@ -34,6 +35,14 @@ export function ARPage(): React.JSX.Element {
   const [pitch, setPitch] = useState(0);
   const [playerPosition, setPlayerPosition] =
     useState<google.maps.LatLng | null>(null);
+
+  useEffect(() => {
+    console.log('ARPage mounted');
+
+    return () => {
+      console.log('ARPage unmounted');
+    };
+  }, []);
 
   const visibleFossils = playerPosition == null ? [] : (() => {
     const playerLat = playerPosition.lat();
@@ -175,7 +184,7 @@ export function ARPage(): React.JSX.Element {
       </div>
       {/* Botón salir */}
       <Button
-        variant="ghost"
+        variant="secondary"
         size="sm"
         className="absolute left-3 top-3 z-20 bg-panel/90"
         onClick={() => navigate(RoutePaths.Missions)}

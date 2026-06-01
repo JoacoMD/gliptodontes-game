@@ -2,6 +2,7 @@ import { Canvas } from '@react-three/fiber';
 import { signedAngleDifference } from './util/signedAngleDifference';
 import { FossilAR } from '@/types';
 import { FossilModel } from './FossilModel';
+import { useEffect } from 'react'
 
 interface FossilMarker extends FossilAR {
   heading: number;
@@ -19,6 +20,15 @@ export function FossilOverlay({
   pitch,
   fossils,
 }: Props) {
+
+  useEffect(() => {
+    console.log('FossilOverlay mounted');
+
+    return () => {
+      console.log('FossilOverlay unmounted');
+    };
+  }, []);
+
   return (
     <Canvas
       style={{
@@ -31,8 +41,8 @@ export function FossilOverlay({
         fov: 75,
       }}
     >
-      <ambientLight intensity={3} />
-      <directionalLight position={[5, 5, 5]} intensity={2} />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[5, 5, 5]} intensity={1} />
 
       {fossils.map((fossil) => {
         const dx = signedAngleDifference(
