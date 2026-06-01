@@ -54,4 +54,15 @@ export interface MinigameResult {
   body: string;
   primaryCta: { label: string; action: 'retry' | 'next' | 'menu' };
   secondaryCta?: { label: string; action: 'retry' | 'next' | 'menu' };
+  didYouKnow?: string;
+}
+
+export interface FossilAR {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  model: string;
+  scale: number;
+  funfact: string;
 }
