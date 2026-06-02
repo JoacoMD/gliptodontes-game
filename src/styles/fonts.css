@@ -51,6 +51,7 @@
   --font-decorative: var(--font-title);
   --font-active-title: var(--font-title);
   --font-active-body: var(--font-body);
+  --font-scale: 1;
 }
 
 :root[data-simplified-font='true'] {
@@ -62,4 +63,8 @@
   --font-active-title: var(--font-title);
   --font-active-body: var(--font-body);
   --font-active: var(--font-body);
+}
+
+html {
+  font-size: calc(16px * var(--font-scale));
 }
