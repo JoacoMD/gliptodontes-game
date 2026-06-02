@@ -24,6 +24,8 @@ export interface SearchSceneDef {
   title: string;
   intro: string[];
   backgroundKey: string;
+  /** Ruta relativa a /public (ej. 'assets/search/search-lab-bg.png'). */
+  backgroundPath: string;
   didYouKnow: string;
   objects: HiddenObject[];
 }

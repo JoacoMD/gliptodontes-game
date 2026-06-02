@@ -9,14 +9,17 @@ export const LAB_SCENE: SearchSceneDef = {
     'Tocá cada una cuando la veas. Si te trabás, pedí una pista (tenés 2).',
   ],
   backgroundKey: 'search-lab-bg',
+  backgroundPath: 'assets/search/search-lab-bg.png',
   didYouKnow:
     'Los paleontólogos pueden tardar semanas en limpiar un solo fósil con pinceles finos.',
   objects: [
+    // Hitboxes calibradas contra public/assets/search/search-lab-bg.png (720×1280).
     {
       id: 'pincel',
       name: 'Pincel',
       category: 'tool',
-      hitbox: { x: 80, y: 420, w: 140, h: 120 },
+      // Pincel apoyado junto a los frascos, parte superior izquierda del escritorio.
+      hitbox: { x: 200, y: 620, w: 60, h: 110 },
       iconKey: 'search-icon-pincel',
       fact: 'Sirve para limpiar fósiles sin dañarlos.',
     },
@@ -24,7 +27,8 @@ export const LAB_SCENE: SearchSceneDef = {
       id: 'martillo',
       name: 'Martillo',
       category: 'tool',
-      hitbox: { x: 280, y: 500, w: 160, h: 130 },
+      // Martillo con mango claro sobre el cuaderno central.
+      hitbox: { x: 360, y: 780, w: 100, h: 80 },
       iconKey: 'search-icon-martillo',
       fact: 'Permite fracturar roca para acceder a los fósiles.',
     },
@@ -32,7 +36,8 @@ export const LAB_SCENE: SearchSceneDef = {
       id: 'lupa',
       name: 'Lupa',
       category: 'tool',
-      hitbox: { x: 500, y: 450, w: 140, h: 140 },
+      // Lupa con mango verde en el centro del escritorio.
+      hitbox: { x: 310, y: 870, w: 120, h: 90 },
       iconKey: 'search-icon-lupa',
       fact: 'Para observar detalles muy pequeños en los huesos.',
     },
@@ -40,7 +45,8 @@ export const LAB_SCENE: SearchSceneDef = {
       id: 'cuaderno',
       name: 'Cuaderno de campo',
       category: 'tool',
-      hitbox: { x: 100, y: 720, w: 180, h: 140 },
+      // Cuaderno abierto, centro-izquierda.
+      hitbox: { x: 130, y: 790, w: 220, h: 70 },
       iconKey: 'search-icon-cuaderno',
       fact: 'Para anotar todo lo que se encuentra en el yacimiento.',
     },
@@ -48,7 +54,8 @@ export const LAB_SCENE: SearchSceneDef = {
       id: 'gps',
       name: 'GPS',
       category: 'tool',
-      hitbox: { x: 320, y: 760, w: 140, h: 130 },
+      // Aparato rectangular con pantalla, banda inferior central-derecha.
+      hitbox: { x: 350, y: 970, w: 70, h: 70 },
       iconKey: 'search-icon-gps',
       fact: 'Para marcar la ubicación exacta de cada hallazgo.',
     },
@@ -56,7 +63,8 @@ export const LAB_SCENE: SearchSceneDef = {
       id: 'cinta',
       name: 'Cinta métrica',
       category: 'tool',
-      hitbox: { x: 500, y: 720, w: 150, h: 150 },
+      // Carrete amarillo redondo, esquina inferior derecha.
+      hitbox: { x: 570, y: 960, w: 100, h: 80 },
       iconKey: 'search-icon-cinta',
       fact: 'Para medir el tamaño de los fósiles antes de moverlos.',
     },
@@ -72,14 +80,17 @@ export const SITE_SCENE: SearchSceneDef = {
     'Usá las pistas si te trabás (tenés 2).',
   ],
   backgroundKey: 'search-site-bg',
+  backgroundPath: 'assets/search/search-site-bg.png',
   didYouKnow:
     'Los gliptodontes vivieron en Sudamérica hasta hace unos 10.000 años, al final de la última glaciación.',
   objects: [
+    // Hitboxes calibradas contra public/assets/search/search-site-bg.png (720×1280).
     {
       id: 'placa-caparazon',
       name: 'Placa de caparazón',
       category: 'fossil',
-      hitbox: { x: 60, y: 440, w: 160, h: 130 },
+      // Caparazón del gliptodonte semienterrado, mitad izquierda del pozo.
+      hitbox: { x: 80, y: 520, w: 250, h: 200 },
       iconKey: 'search-icon-placa',
       fact: 'Cada caparazón de gliptodonte tenía miles de placas óseas.',
     },
@@ -87,7 +98,8 @@ export const SITE_SCENE: SearchSceneDef = {
       id: 'diente',
       name: 'Diente',
       category: 'fossil',
-      hitbox: { x: 260, y: 460, w: 120, h: 110 },
+      // Diente triangular marrón a la derecha del caparazón.
+      hitbox: { x: 450, y: 520, w: 150, h: 150 },
       iconKey: 'search-icon-diente',
       fact: 'Por la forma del diente sabemos qué comía un animal extinto.',
     },
@@ -95,7 +107,8 @@ export const SITE_SCENE: SearchSceneDef = {
       id: 'femur',
       name: 'Fémur',
       category: 'fossil',
-      hitbox: { x: 430, y: 440, w: 200, h: 130 },
+      // Hueso largo cruzando entre piedras a la derecha.
+      hitbox: { x: 420, y: 700, w: 260, h: 150 },
       iconKey: 'search-icon-femur',
       fact: 'El fémur es el hueso más grande del cuerpo y suele preservarse bien.',
     },
@@ -103,7 +116,8 @@ export const SITE_SCENE: SearchSceneDef = {
       id: 'huella',
       name: 'Huella',
       category: 'fossil',
-      hitbox: { x: 80, y: 720, w: 200, h: 160 },
+      // Icnita en arcilla, banda inferior izquierda-centro.
+      hitbox: { x: 100, y: 860, w: 230, h: 140 },
       iconKey: 'search-icon-huella',
       fact: 'Las icnitas son huellas fosilizadas; cuentan cómo se movía un animal.',
     },
@@ -111,7 +125,8 @@ export const SITE_SCENE: SearchSceneDef = {
       id: 'caracol',
       name: 'Caracol fósil',
       category: 'fossil',
-      hitbox: { x: 320, y: 760, w: 130, h: 130 },
+      // Caracol en espiral, esquina inferior izquierda.
+      hitbox: { x: 120, y: 1030, w: 140, h: 120 },
       iconKey: 'search-icon-caracol',
       fact: 'Los moluscos fósiles ayudan a fechar las capas de roca.',
     },
@@ -119,7 +134,8 @@ export const SITE_SCENE: SearchSceneDef = {
       id: 'mandibula',
       name: 'Mandíbula',
       category: 'fossil',
-      hitbox: { x: 490, y: 740, w: 180, h: 150 },
+      // Mandíbula con dientes, esquina inferior derecha.
+      hitbox: { x: 400, y: 1050, w: 270, h: 120 },
       iconKey: 'search-icon-mandibula',
       fact: 'La mandíbula concentra mucha información sobre la dieta del animal.',
     },
@@ -135,14 +151,17 @@ export const MUSEUM_SCENE: SearchSceneDef = {
     'Tenés 2 pistas, usalas con criterio.',
   ],
   backgroundKey: 'search-museum-bg',
+  backgroundPath: 'assets/search/search-museum-bg.png',
   didYouKnow:
     'En los museos, las piezas se clasifican por especie, edad geológica y lugar de hallazgo.',
   objects: [
+    // Hitboxes calibradas contra public/assets/search/search-museum-bg.png (720×1280).
     {
       id: 'caparazon-completo',
       name: 'Caparazón',
       category: 'specimen',
-      hitbox: { x: 80, y: 420, w: 240, h: 200 },
+      // Caparazón completo sobre el pedestal, centro-izquierda.
+      hitbox: { x: 120, y: 600, w: 260, h: 200 },
       iconKey: 'search-icon-caparazon-completo',
       fact: 'Un caparazón entero de gliptodonte podía pesar más de 400 kg.',
     },
@@ -150,7 +169,8 @@ export const MUSEUM_SCENE: SearchSceneDef = {
       id: 'cola-armadura',
       name: 'Cola con armadura',
       category: 'specimen',
-      hitbox: { x: 380, y: 460, w: 240, h: 130 },
+      // Cola con púas sobre soporte, centro-derecha.
+      hitbox: { x: 420, y: 730, w: 260, h: 100 },
       iconKey: 'search-icon-cola',
       fact: 'Algunos gliptodontes tenían colas con púas óseas para defenderse.',
     },
@@ -158,7 +178,8 @@ export const MUSEUM_SCENE: SearchSceneDef = {
       id: 'cartel',
       name: 'Cartel informativo',
       category: 'specimen',
-      hitbox: { x: 60, y: 660, w: 200, h: 110 },
+      // Cartel "GLYPTODONT" en el frente del pedestal.
+      hitbox: { x: 100, y: 820, w: 160, h: 110 },
       iconKey: 'search-icon-cartel',
       fact: 'Los carteles explican qué pieza es y cuándo vivió el animal.',
     },
@@ -166,7 +187,8 @@ export const MUSEUM_SCENE: SearchSceneDef = {
       id: 'reconstruccion',
       name: 'Reconstrucción',
       category: 'specimen',
-      hitbox: { x: 290, y: 640, w: 180, h: 180 },
+      // Figura del mamífero reconstruido, abajo a la izquierda.
+      hitbox: { x: 40, y: 1010, w: 200, h: 170 },
       iconKey: 'search-icon-reconstruccion',
       fact: 'Las reconstrucciones combinan huesos reales con réplicas.',
     },
@@ -174,7 +196,8 @@ export const MUSEUM_SCENE: SearchSceneDef = {
       id: 'vitrina',
       name: 'Vitrina',
       category: 'specimen',
-      hitbox: { x: 500, y: 660, w: 180, h: 200 },
+      // Vitrina alta con estantes de fósiles, parte superior derecha.
+      hitbox: { x: 320, y: 370, w: 260, h: 220 },
       iconKey: 'search-icon-vitrina',
       fact: 'Las vitrinas controlan la humedad para que los fósiles no se dañen.',
     },
@@ -182,7 +205,8 @@ export const MUSEUM_SCENE: SearchSceneDef = {
       id: 'etiqueta',
       name: 'Etiqueta de inventario',
       category: 'specimen',
-      hitbox: { x: 60, y: 880, w: 200, h: 110 },
+      // Etiqueta de papel colgando, esquina inferior derecha.
+      hitbox: { x: 460, y: 1060, w: 100, h: 140 },
       iconKey: 'search-icon-etiqueta',
       fact: 'Cada pieza tiene un código único en la colección del museo.',
     },

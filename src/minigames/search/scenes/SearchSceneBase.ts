@@ -16,10 +16,17 @@ export abstract class SearchSceneBase extends MinigameSceneBase {
   protected sceneDef: SearchSceneDef;
   private placeholders = new Map<string, Phaser.GameObjects.Container>();
   private hintGfx?: Phaser.GameObjects.Arc;
+  private rectsVisible = false;
 
   constructor(sceneKey: string, sceneDef: SearchSceneDef) {
     super(sceneKey);
     this.sceneDef = sceneDef;
+  }
+
+  preload(): void {
+    if (!this.textures.exists(this.sceneDef.backgroundKey)) {
+      this.load.image(this.sceneDef.backgroundKey, this.sceneDef.backgroundPath);
+    }
   }
 
   create(): void {
@@ -28,8 +35,12 @@ export abstract class SearchSceneBase extends MinigameSceneBase {
 
     this.model = new SearchModel(this.sceneDef);
 
-    this.drawBackgroundPlaceholder(palette);
-    this.drawObjectPlaceholders(palette);
+    this.drawBackground(palette);
+    // Si la imagen de fondo está disponible, los objetos ya están pintados en
+    // ella: no dibujamos los rectángulos coloreados encima (sólo registramos
+    // los contenedores invisibles para marcar el "tick" al encontrarlos).
+    this.rectsVisible = !this.textures.exists(this.sceneDef.backgroundKey);
+    this.drawObjectPlaceholders(palette, this.rectsVisible);
 
     this.input.on(Phaser.Input.Events.POINTER_DOWN, this.onPointerDown, this);
 
@@ -88,11 +99,23 @@ export abstract class SearchSceneBase extends MinigameSceneBase {
     if (container) {
       const tick = container.getByName('tick') as Phaser.GameObjects.Text | null;
       tick?.setVisible(true);
-      this.tweens.add({
-        targets: container,
-        alpha: 0.3,
-        duration: 250,
-      });
+      if (this.rectsVisible) {
+        // Si los rects de debug están a la vista, los desvanecemos al hallar.
+        this.tweens.add({
+          targets: container,
+          alpha: 0.3,
+          duration: 250,
+        });
+      } else if (tick) {
+        // Mini-pulso del check sobre el fondo real.
+        tick.setScale(0.6);
+        this.tweens.add({
+          targets: tick,
+          scale: 1,
+          duration: 220,
+          ease: 'Back.Out',
+        });
+      }
     }
     EventBus.emit(EventKeys.SearchObjectFound, obj);
   };
@@ -141,10 +164,31 @@ export abstract class SearchSceneBase extends MinigameSceneBase {
     });
   }
 
-  private drawBackgroundPlaceholder(palette: { panel: number; panelBorder: number; textSecondary: number }): void {
+  private drawBackground(palette: {
+    panel: number;
+    panelBorder: number;
+    textSecondary: number;
+  }): void {
+    if (this.textures.exists(this.sceneDef.backgroundKey)) {
+      const img = this.add
+        .image(GameSize.width / 2, GameSize.height / 2, this.sceneDef.backgroundKey)
+        .setOrigin(0.5);
+      // Encaja la imagen dentro del canvas conservando proporciones (cover).
+      const src = img.texture.getSourceImage() as HTMLImageElement | HTMLCanvasElement;
+      const scale = Math.max(GameSize.width / src.width, GameSize.height / src.height);
+      img.setScale(scale).setDepth(-10);
+      return;
+    }
+    // Fallback: placeholder si la textura no cargó.
     const bgY = 360;
     this.add
-      .rectangle(GameSize.width / 2, (bgY + GameSize.height) / 2, GameSize.width - 24, GameSize.height - bgY - 24, palette.panel)
+      .rectangle(
+        GameSize.width / 2,
+        (bgY + GameSize.height) / 2,
+        GameSize.width - 24,
+        GameSize.height - bgY - 24,
+        palette.panel,
+      )
       .setStrokeStyle(2, palette.panelBorder);
     this.add
       .text(GameSize.width / 2, bgY + 20, `[Placeholder] ${this.sceneDef.title}`, {
@@ -155,31 +199,39 @@ export abstract class SearchSceneBase extends MinigameSceneBase {
       .setOrigin(0.5, 0);
   }
 
-  private drawObjectPlaceholders(palette: { accent: number }): void {
+  private drawObjectPlaceholders(palette: { accent: number }, showRects: boolean): void {
     for (const obj of this.sceneDef.objects) {
       const { x, y, w, h } = obj.hitbox;
       const container = this.add.container(0, 0);
-      const rect = this.add
-        .rectangle(x + w / 2, y + h / 2, w, h, palette.accent, 0.35)
-        .setStrokeStyle(2, palette.accent);
-      const label = this.add
-        .text(x + w / 2, y + h / 2, obj.name, {
-          fontFamily: 'Bubblegum Sans, Atkinson Hyperlegible, sans-serif',
-          fontSize: '14px',
-          color: '#ffffff',
-          align: 'center',
-        })
-        .setOrigin(0.5);
+      const children: Phaser.GameObjects.GameObject[] = [];
+      if (showRects) {
+        const rect = this.add
+          .rectangle(x + w / 2, y + h / 2, w, h, palette.accent, 0.35)
+          .setStrokeStyle(2, palette.accent);
+        const label = this.add
+          .text(x + w / 2, y + h / 2, obj.name, {
+            fontFamily: 'Bubblegum Sans, Atkinson Hyperlegible, sans-serif',
+            fontSize: '14px',
+            color: '#ffffff',
+            align: 'center',
+          })
+          .setOrigin(0.5);
+        children.push(rect, label);
+      }
       const tick = this.add
         .text(x + w - 12, y + 12, '✓', {
           fontFamily: 'Bubblegum Sans, Atkinson Hyperlegible, sans-serif',
-          fontSize: '24px',
+          fontSize: '28px',
           color: '#22c55e',
+          stroke: '#000000',
+          strokeThickness: 3,
         })
         .setOrigin(1, 0)
+        .setDepth(20)
         .setVisible(false);
       tick.setName('tick');
-      container.add([rect, label, tick]);
+      children.push(tick);
+      container.add(children);
       this.placeholders.set(obj.id, container);
     }
   }

@@ -8,6 +8,7 @@ const fakeScene = (overrides: Partial<SearchSceneDef> = {}): SearchSceneDef => (
   title: 'Laboratorio',
   intro: ['Encontrá las herramientas.'],
   backgroundKey: 'lab-bg',
+  backgroundPath: 'assets/search/search-lab-bg.png',
   didYouKnow: 'Los paleontólogos usan pinceles finos.',
   objects: [
     {
