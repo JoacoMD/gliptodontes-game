@@ -20,6 +20,18 @@ npm run typecheck   # tsc --noEmit
 
 ---
 
+## Variables de entorno
+
+Es necesario una variable de entorno para el [ servicio de Google Maps ](https://console.cloud.google.com/google/maps-apis/).
+Esta puede ser la key de demo.
+
+```bash
+#Dentro de .env
+VITE_GOOGLE_MAPS_API_KEY=<tu-googlemaps-apikey>
+```
+
+---
+
 ## Arquitectura
 
 ```
@@ -43,7 +55,7 @@ npm run typecheck   # tsc --noEmit
 │  EventKeys.MinigameSuccess / Failure al EventBus.   │
 └──────────────────────▲──────────────────────────────┘
                        │
-                       ▼
+                      ▼
 ┌─────────────────────────────────────────────────────┐
 │  Lógica de minijuego (src/minigames/<id>/Model.ts)  │
 │  TS puro · sin React · sin Phaser · testeable       │
