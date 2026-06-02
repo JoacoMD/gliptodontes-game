@@ -9,11 +9,23 @@ import { SettingsStore } from '@/systems/SettingsStore';
 import type { FontScale } from '@/types';
 import type { ColorBlindMode } from '@/config/Palettes';
 
-const FONT_OPTIONS: { value: FontScale; label: string }[] = [
-  { value: 'small', label: 'A' },
-  { value: 'medium', label: 'A' },
-  { value: 'large', label: 'A' },
-  { value: 'xlarge', label: 'A' },
+const FONT_OPTIONS = [
+  {
+    value: 'small',
+    label: <span className="text-sm">A</span>,
+  },
+  {
+    value: 'medium',
+    label: <span className="text-base">A</span>,
+  },
+  {
+    value: 'large',
+    label: <span className="text-xl">A</span>,
+  },
+  {
+    value: 'xlarge',
+    label: <span className="text-3xl">A</span>,
+  },
 ];
 
 const CB_OPTIONS: { value: ColorBlindMode; label: string }[] = [
