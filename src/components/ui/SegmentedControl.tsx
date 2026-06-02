@@ -1,9 +1,10 @@
 import * as ToggleGroup from '@radix-ui/react-toggle-group';
 import { useId } from 'react';
+import { ReactNode } from 'react';
 
 export interface SegmentedOption<T extends string> {
   value: T;
-  label: string;
+  label: ReactNode;
 }
 
 export interface SegmentedControlProps<T extends string> {

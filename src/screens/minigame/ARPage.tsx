@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useMemo } from 'react';
+import { useEffect } from 'react';
 
 import { HelpButton } from '@/components/ui/HelpButton';
 import { Button } from '@/components/ui/Button';
@@ -34,6 +35,14 @@ export function ARPage(): React.JSX.Element {
   const [pitch, setPitch] = useState(0);
   const [playerPosition, setPlayerPosition] =
     useState<google.maps.LatLng | null>(null);
+
+  useEffect(() => {
+    console.log('ARPage mounted');
+
+    return () => {
+      console.log('ARPage unmounted');
+    };
+  }, []);
 
   const visibleFossils = playerPosition == null ? [] : (() => {
     const playerLat = playerPosition.lat();
@@ -82,6 +91,25 @@ export function ARPage(): React.JSX.Element {
     });
   }, [playerPosition]);
 
+  const handleResultAction = (
+    action: 'retry' | 'next' | 'menu',
+  ): void => {
+    setResult(null);
+
+    switch (action) {
+      case 'menu':
+        navigate(RoutePaths.Missions);
+        break;
+
+      case 'next':
+        navigate(RoutePaths.Missions);
+        break;
+
+      case 'retry':
+        break;
+    }
+  };
+
   const identifyFossil = (): void => {
     if (!playerPosition) return;
 
@@ -110,7 +138,7 @@ export function ARPage(): React.JSX.Element {
       title: '¡Bien hecho!',
       body: `Identificaste correctamente el ${target.name}.`,
       didYouKnow: target.funfact,
-      primaryCta: { label: 'Continuar', action: 'next' },
+      primaryCta: { label: 'Continuar', action: 'retry' },
       secondaryCta: { label: 'Volver al menu', action: 'menu' },
     });
   };
@@ -175,7 +203,7 @@ export function ARPage(): React.JSX.Element {
       </div>
       {/* Botón salir */}
       <Button
-        variant="ghost"
+        variant="secondary"
         size="sm"
         className="absolute left-3 top-3 z-20 bg-panel/90"
         onClick={() => navigate(RoutePaths.Missions)}
@@ -205,7 +233,7 @@ export function ARPage(): React.JSX.Element {
         open={result !== null}
         result={result}
         didYouKnow={result?.didYouKnow}
-        onAction={() => setResult(null)}
+        onAction={handleResultAction}
       />
     </section>
   );

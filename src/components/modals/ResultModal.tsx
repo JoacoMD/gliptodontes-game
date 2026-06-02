@@ -34,14 +34,15 @@ export function ResultModal({
         },
         ...(result.secondaryCta
           ? [
-              {
-                label: result.secondaryCta.label,
-                variant: 'secondary' as const,
-                onClick: () => onAction(result.secondaryCta!.action),
-              },
-            ]
+            {
+              label: result.secondaryCta.label,
+              variant: 'secondary' as const,
+              onClick: () => onAction(result.secondaryCta!.action),
+            },
+          ]
           : []),
       ]}
+      narratable={`${result.title}. , ${result.body}. , ${didYouKnow ? '¿Sabías que...' + didYouKnow : ''}. , ${result.primaryCta.label}. , ${result.secondaryCta?.label ?? ''}`}
     >
       {didYouKnow && (
         <p className="rounded-lg border border-panel-border bg-background/40 p-3 text-sm text-text-secondary">

@@ -3,6 +3,7 @@ import { useEffect, useRef, type ReactNode } from 'react';
 import { EventKeys } from '@/config/Constants';
 import { EventBus } from '@/systems/EventBus';
 import { Button, type ButtonVariant } from '@/components/ui/Button';
+import { useNarrator } from '@/hooks/useNarrator';
 
 export type ModalVariant = 'info' | 'success' | 'failure';
 
@@ -25,6 +26,7 @@ export interface ModalProps {
   actions: ModalAction[];
   variant?: ModalVariant;
   onOpenChange?: (open: boolean) => void;
+  narratable?: string;
 }
 
 const variantTitleClasses: Record<ModalVariant, string> = {
@@ -43,8 +45,12 @@ export function Modal({
   actions,
   variant = 'info',
   onOpenChange,
+  narratable = '',
 }: ModalProps): React.JSX.Element {
   const primaryRef = useRef<HTMLButtonElement>(null);
+
+  const { speak } = useNarrator();
+  const narrationText = `${narratable ?? ''}`;
 
   useEffect(() => {
     if (open) EventBus.emit(EventKeys.ModalOpened, id);
@@ -77,6 +83,24 @@ export function Modal({
           }}
           className="fixed left-1/2 top-1/2 z-50 w-[min(92%,520px)] -translate-x-1/2 -translate-y-1/2 rounded-2xl border-4 border-panel-border bg-panel p-6 shadow-2xl"
         >
+
+          {narratable && (
+            <div className="absolute right-4 top-4">
+              <Button
+                variant="secondary"
+                size="sm"
+                aria-label="Leer en voz alta"
+                onClick={() =>
+                  speak(narrationText, {
+                    interrupt: true,
+                  })
+                }
+              >
+                🔊
+              </Button>
+            </div>
+          )}
+
           <Dialog.Title
             className={`mb-3 text-center text-3xl font-bold ${variantTitleClasses[variant]}`}
           >
@@ -88,6 +112,8 @@ export function Modal({
             </Dialog.Description>
           )}
           {children && <div className="mb-4 text-text-primary">{children}</div>}
+
+
           <div className="mt-4 flex flex-col gap-3 sm:flex-row">
             {actions.map((a, i) => (
               <Button

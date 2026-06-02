@@ -38,6 +38,7 @@ export function HowToPlayModal({
           autoFocus: true,
         },
       ]}
+      narratable={`${content.title ?? '¿Cómo jugar?'}. , ${content.body}. , ${content.ctaLabel ?? 'Jugar'}.`}
     >
       <ul className="space-y-2 text-base leading-snug">
         {body.map((line, i) => (
