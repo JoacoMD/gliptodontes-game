@@ -91,6 +91,25 @@ export function ARPage(): React.JSX.Element {
     });
   }, [playerPosition]);
 
+  const handleResultAction = (
+    action: 'retry' | 'next' | 'menu',
+  ): void => {
+    setResult(null);
+
+    switch (action) {
+      case 'menu':
+        navigate(RoutePaths.Missions);
+        break;
+
+      case 'next':
+        navigate(RoutePaths.Missions);
+        break;
+
+      case 'retry':
+        break;
+    }
+  };
+
   const identifyFossil = (): void => {
     if (!playerPosition) return;
 
@@ -119,7 +138,7 @@ export function ARPage(): React.JSX.Element {
       title: '¡Bien hecho!',
       body: `Identificaste correctamente el ${target.name}.`,
       didYouKnow: target.funfact,
-      primaryCta: { label: 'Continuar', action: 'next' },
+      primaryCta: { label: 'Continuar', action: 'retry' },
       secondaryCta: { label: 'Volver al menu', action: 'menu' },
     });
   };
@@ -214,7 +233,7 @@ export function ARPage(): React.JSX.Element {
         open={result !== null}
         result={result}
         didYouKnow={result?.didYouKnow}
-        onAction={() => setResult(null)}
+        onAction={handleResultAction}
       />
     </section>
   );
