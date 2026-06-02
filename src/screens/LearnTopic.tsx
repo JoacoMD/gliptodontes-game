@@ -22,7 +22,7 @@ export function LearnTopic(): React.JSX.Element {
   return (
     <article
       aria-labelledby="topic-title"
-      className="flex h-full w-full flex-col p-6"
+      className="flex h-full w-full flex-col p-6 bg-background/60"
     >
       <h1 id="topic-title" className="mb-4 text-center font-decorative text-3xl text-accent">
         {topic.title}

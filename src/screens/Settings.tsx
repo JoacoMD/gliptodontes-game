@@ -8,6 +8,7 @@ import { useSettings } from '@/hooks/useSettings';
 import { SettingsStore } from '@/systems/SettingsStore';
 import type { FontScale } from '@/types';
 import type { ColorBlindMode } from '@/config/Palettes';
+import { ReactNode } from 'react';
 
 const FONT_OPTIONS = [
   {
@@ -42,7 +43,7 @@ export function SettingsPage(): React.JSX.Element {
   return (
     <section
       aria-label="Ajustes"
-      className="flex h-full w-full flex-col gap-2 overflow-y-auto p-6"
+      className="flex h-full w-full flex-col gap-2 overflow-y-auto p-6 bg-background/60"
     >
       <h1 className="mb-4 text-center font-decorative text-7xl title-text">Ajustes</h1>
 
