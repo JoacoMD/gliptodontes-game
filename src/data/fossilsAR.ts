@@ -4,7 +4,7 @@ export const fossilsAR: FossilAR[] = [
   {
     id: 'glyptodon',
     name: 'Gliptodonte',
-    lat: -34.9228,
+    lat: -34.9219,
     lng: -57.9532,
     model: '/assets/models3D/gliptodonte3D.glb',
     scale: 0.001,

@@ -3,6 +3,7 @@ import { signedAngleDifference } from './util/signedAngleDifference';
 import { FossilAR } from '@/types';
 import { FossilModel } from './FossilModel';
 import { useEffect } from 'react'
+import { closeEnough } from './util/closeEnough';
 
 interface FossilMarker extends FossilAR {
   heading: number;
@@ -71,6 +72,19 @@ export function FossilOverlay({
             position={[x, y, 0]}
             scale={scale}
           >
+            {closeEnough(
+              heading,
+              fossil.heading,
+              fossil.distance,
+              50,
+              6,
+            ) && (
+                <pointLight
+                  color="yellow"
+                  intensity={10}
+                  distance={50}
+                />
+              )}
             <FossilModel fossil={fossil} />
           </group>
         );
