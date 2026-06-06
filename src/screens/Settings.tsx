@@ -10,24 +10,27 @@ import type { FontScale } from '@/types';
 import type { ColorBlindMode } from '@/config/Palettes';
 import { ReactNode } from 'react';
 
-const FONT_OPTIONS = [
-  {
-    value: 'small',
-    label: <span className="text-sm">A</span>,
-  },
-  {
-    value: 'medium',
-    label: <span className="text-base">A</span>,
-  },
-  {
-    value: 'large',
-    label: <span className="text-xl">A</span>,
-  },
-  {
-    value: 'xlarge',
-    label: <span className="text-3xl">A</span>,
-  },
-];
+const FONT_OPTIONS: {
+  value: FontScale;
+  label: ReactNode;
+}[] = [
+    {
+      value: 'small',
+      label: <span className="text-sm">A</span>,
+    },
+    {
+      value: 'medium',
+      label: <span className="text-base">A</span>,
+    },
+    {
+      value: 'large',
+      label: <span className="text-xl">A</span>,
+    },
+    {
+      value: 'xlarge',
+      label: <span className="text-3xl">A</span>,
+    },
+  ];
 
 const CB_OPTIONS: { value: ColorBlindMode; label: string }[] = [
   { value: 'normal', label: 'Normal' },
