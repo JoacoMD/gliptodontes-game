@@ -136,7 +136,7 @@ export function ARPage(): React.JSX.Element {
     setResult({
       variant: 'success',
       title: '¡Bien hecho!',
-      body: `Identificaste correctamente el ${target.name}.`,
+      body: `Identificaste el ${target.name}.`,
       didYouKnow: target.funfact,
       primaryCta: { label: 'Continuar', action: 'retry' },
       secondaryCta: { label: 'Volver al menu', action: 'menu' },
@@ -146,8 +146,7 @@ export function ARPage(): React.JSX.Element {
   const helpContent: HowToPlayContent = {
     body: [
       'Apuntá con la cámara hacia el animal del pasado.',
-      'Cuando lo tengas centrado, tocá el botón "Identificar".',
-      'Si está bien identificado vas a sumar puntos.',
+      'Cuando lo tengas centrado el fosil será iluminado, entonces tocá el botón "Identificar".',
     ],
     ctaLabel: 'Comenzar',
   };
