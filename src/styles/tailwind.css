@@ -32,15 +32,15 @@
   --font-scale: 1;
   --c-background: #f3e6c4;
   --c-panel: #d9b380;
-  --c-panel-border: #5b3a1e;
-  --c-stroke: #5C3D20;
+  --c-panel-border: #5F2711;
+  --c-stroke: #5F2711;
   --c-text-title: #FFFFFF;
   --c-text-primary: #3b2410;
-  --c-text-secondary: #6b4a2b;
-  --c-accent: #b45b1f;
+  --c-text-secondary: #5F2711;
+  --c-accent: #612200;
   --c-accent-alt: #2f7d4a;
   --c-success: #2f7d4a;
-  --c-failure: #b1382a;
+  --c-failure: #ff0000;
   --c-warning: #d9a441;
   --c-focus-ring: #1f6feb;
 }

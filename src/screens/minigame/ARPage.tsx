@@ -139,7 +139,7 @@ export function ARPage(): React.JSX.Element {
       body: `Identificaste correctamente el ${target.name}.`,
       didYouKnow: target.funfact,
       primaryCta: { label: 'Continuar', action: 'retry' },
-      secondaryCta: { label: 'Volver al menu', action: 'menu' },
+      secondaryCta: { label: 'Volver al menú', action: 'menu' },
     });
   };
 
@@ -147,7 +147,6 @@ export function ARPage(): React.JSX.Element {
     body: [
       'Apuntá con la cámara hacia el animal del pasado.',
       'Cuando lo tengas centrado, tocá el botón "Identificar".',
-      'Si está bien identificado vas a sumar puntos.',
     ],
     ctaLabel: 'Comenzar',
   };

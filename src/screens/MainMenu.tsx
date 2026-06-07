@@ -18,14 +18,14 @@ export function MainMenu(): React.JSX.Element {
       className="relative flex h-full w-full flex-col items-center justify-between gap-6 p-6 text-center"
     >
       <header className="mt-12">
-        <h1 className="sr-only">Caminando sobre Gliptodontes y tigres dientes de sable</h1>
-        <img
-          src="/assets/ui/titulo.png"
-          alt=""
-          aria-hidden
-          className="mx-auto h-auto w-full max-w-sm select-none main-title"
-          draggable={false}
-        />
+        <h1>
+          <img
+            src="/assets/ui/titulo.png"
+            alt="Caminando sobre Gliptodontes y tigres dientes de sable"
+            className="mx-auto h-auto w-full max-w-sm select-none main-title"
+            draggable={false}
+          />
+        </h1>
       </header>
       <nav aria-label="Acciones principales" className="flex w-full flex-col items-center gap-4 pb-12">
         <button
