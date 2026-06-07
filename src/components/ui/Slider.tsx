@@ -22,13 +22,22 @@ export function Slider({
 }: SliderProps): React.JSX.Element {
   const id = useId();
   const display = formatValue ? formatValue(value) : `${Math.round(value * 100)}%`;
+  const labelId = `${id}-label`;
+  const valueId = `${id}-value`;
   return (
     <div className="flex flex-col gap-2 py-2">
       <div className="flex items-center justify-between">
-        <label htmlFor={id} className="text-base text-text-primary">
+        <label
+          id={labelId}
+          htmlFor={id}
+          className="text-base text-text-primary"
+        >
           {label}
         </label>
-        <span className="text-sm text-text-secondary" aria-hidden>
+        <span
+          id={valueId}
+          className="text-sm text-text-secondary"
+        >
           {display}
         </span>
       </div>
@@ -39,14 +48,19 @@ export function Slider({
         max={max}
         step={step}
         onValueChange={(v) => onChange(v[0] ?? min)}
-        aria-label={label}
+        aria-labelledby={labelId}
+        aria-describedby={valueId}
         aria-valuetext={display}
         className="relative flex h-8 w-full touch-none select-none items-center"
       >
         <RSlider.Track className="relative h-2 grow rounded-full border border-panel-border bg-panel">
           <RSlider.Range className="absolute h-full rounded-full bg-accent" />
         </RSlider.Track>
-        <RSlider.Thumb className="block h-6 w-6 rounded-full border-2 border-panel-border bg-accent shadow focus-visible:outline-2 focus-visible:outline-focus" />
+
+        <RSlider.Thumb
+          aria-label={`${Math.round(value * 100)}%`}
+          className="block h-6 w-6 rounded-full border-2 border-panel-border bg-accent shadow focus-visible:outline-2 focus-visible:outline-focus"
+        />
       </RSlider.Root>
     </div>
   );

@@ -31,8 +31,8 @@ export function Missions(): React.JSX.Element {
                   w-full
                   max-w-[350px]
                   min-h-[96px]
-                  px-8
-                  py-10
+                  px-10
+                  py-12
                   text-left
                   transition-[transform,filter]
                   duration-200
@@ -44,13 +44,13 @@ export function Missions(): React.JSX.Element {
                   focus-visible:ring-focus
                   "              >
                 <span className="flex w-full flex-col items-start gap-2 py-8 px-10">
-                  <span className="text-2xl font-bold text-text-primary">
+                  <span className="text-2xl font-bold text-primary">
                     {m.title}
                     {done && <span className="ml-2 text-sm text-success" aria-label="Completada">✓</span>}
                   </span>
                   <span
                     id={`mission-desc-${m.id}`}
-                    className="text-sm font-normal text-text-secondary"
+                    className="text-sm font-normal text-secondary"
                   >
                     {m.description}
                   </span>

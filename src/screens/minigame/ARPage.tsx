@@ -139,7 +139,7 @@ export function ARPage(): React.JSX.Element {
       body: `Identificaste el ${target.name}.`,
       didYouKnow: target.funfact,
       primaryCta: { label: 'Continuar', action: 'retry' },
-      secondaryCta: { label: 'Volver al menu', action: 'menu' },
+      secondaryCta: { label: 'Volver al menú', action: 'menu' },
     });
   };
 
