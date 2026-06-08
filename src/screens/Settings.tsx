@@ -5,6 +5,8 @@ import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { Slider } from '@/components/ui/Slider';
 import { Toggle } from '@/components/ui/Toggle';
 import { useSettings } from '@/hooks/useSettings';
+import { useNarrator } from '@/hooks/useNarrator';
+import { useEffect } from 'react';
 import { SettingsStore } from '@/systems/SettingsStore';
 import type { FontScale } from '@/types';
 import type { ColorBlindMode } from '@/config/Palettes';
@@ -43,12 +45,63 @@ export function SettingsPage(): React.JSX.Element {
   const settings = useSettings();
   const navigate = useNavigate();
 
+  const { speak } = useNarrator();
+  useEffect(() => {
+    speak('Ajustes. Modifica los sonidos, controles y opciones de tu expedición.', {
+      interrupt: true,
+    });
+  }, [speak]);
+
+  const readSettingsDescriptions = (() => {
+    speak(`Ajustes.
+
+  Tamaño de fuente: cambia el tamaño del texto para que sea más cómodo de leer.
+
+  Fuente simplificada: reemplaza la tipografía decorativa por una más clara y legible.
+
+  Filtro de color. Ajusta los colores para distintos tipos de daltonismo.
+
+  Música. Controla el volumen de la música de fondo.
+
+  Efectos. Controla el volumen de los sonidos del juego.
+
+  Narrador. Ajusta el volumen de la voz que describe las pantallas.
+
+  Modo sin tiempo. Elimina los límites de tiempo de los minijuegos.
+
+  Narrador activado. Activa o desactiva las descripciones por voz.
+
+  Mostrar silueta del fósil en excavación. Muestra una guía tenue bajo la tierra para ayudar a encontrar el fósil.
+
+  Cuando termines de configurar tu experiencia, selecciona Volver para regresar al menú principal.`, {
+      interrupt: true,
+    });
+  })
+
   return (
     <section
       aria-label="Ajustes"
       className="flex h-full w-full flex-col gap-2 overflow-y-auto p-6 bg-background/60"
     >
-      <h1 className="mb-4 text-center font-decorative text-7xl title-text">Ajustes</h1>
+      <div className="mb-4 flex flex-col items-center gap-2 md:flex-row md:justify-center md:relative">
+        <h1 className="text-center font-decorative text-7xl title-text">
+          Ajustes
+        </h1>
+
+        <button
+          type="button"
+          onClick={readSettingsDescriptions}
+          aria-label="Escuchar descripción de los ajustes"
+          className=" transition-[transform,filter] duration-200 hover:scale-105 hover:drop-shadow-[0_0_18px_rgba(255,193,107,0.85)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus rounded-lg"
+        >
+          <img
+            src="/assets/ui/gliptodontes-sonido.png"
+            alt=""
+            aria-hidden="true"
+            className="h-16 w-16"
+          />
+        </button>
+      </div>
 
       <SegmentedControl
         label="Tamaño de fuente"

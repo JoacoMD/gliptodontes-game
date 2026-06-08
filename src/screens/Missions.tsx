@@ -3,16 +3,50 @@ import { RoutePaths } from '@/config/Constants';
 import { Button } from '@/components/ui/Button';
 import { MISSIONS } from '@/data/missions';
 import { useSave } from '@/hooks/useSave';
+import { useNarrator } from '@/hooks/useNarrator';
+import { useEffect } from 'react';
 
 export function Missions(): React.JSX.Element {
   const navigate = useNavigate();
   const save = useSave();
+  const { speak } = useNarrator();
+  useEffect(() => {
+    speak('Misiones. Aquí encontrarás los desafíos disponibles para tu expedición.', {
+      interrupt: true,
+    });
+  }, [speak]);
+
+  const readMissionsMenu = (() => {
+    speak(`
+${MISSIONS.map(t => `${t.title}. ${t.description}.`).join('... ')}
+ ... 
+Selecciona una tarjeta para comenzar a explorar. Cuando termines, utiliza el botón Volver para regresar al menú principal.
+`, {
+      interrupt: true,
+    });
+  })
   return (
     <section
       aria-label="Misiones"
       className="flex h-full w-full flex-col p-6"
     >
-      <h1 className="mb-6 text-center font-decorative text-8xl title-text">Misiones</h1>
+      <div className="mb-4 flex flex-col items-center gap-2 md:flex-row md:justify-center md:relative">
+        <h1 className="mb-6 text-center font-decorative text-8xl title-text">Misiones</h1>
+
+        <button
+          type="button"
+          onClick={readMissionsMenu}
+          aria-label="Escuchar descripción de esta seccion"
+          className=" transition-[transform,filter] duration-200 hover:scale-105 hover:drop-shadow-[0_0_18px_rgba(255,193,107,0.85)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus rounded-lg"
+        >
+          <img
+            src="/assets/ui/gliptodontes-sonido.png"
+            alt=""
+            aria-hidden="true"
+            className="h-16 w-16"
+          />
+        </button>
+      </div>
       <ul className="flex flex-col md:flex-row md:flex-wrap overflow-y-auto gap-4 items-center">
         {MISSIONS.map((m) => {
           const done = save.completedMissions.includes(m.id);
