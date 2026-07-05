@@ -32,6 +32,10 @@ export interface Mission {
   iconKey?: string;
   /** Solo aplica a misiones de excavación. Si no se especifica, se usa el shape default. */
   fossilShapeId?: string;
+  /** Imagen descriptiva del minijuego, para asociación visual. Opcional. */
+  image?: string;
+  /** Texto alternativo de `image`. Si falta, la imagen se trata como decorativa (alt=""). */
+  imageAlt?: string;
 }
 
 export interface LearnTopic {

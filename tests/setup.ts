@@ -8,6 +8,30 @@ beforeEach(() => {
 });
 
 // ---------------------------------------------------------------------------
+// PointerEvent polyfill for jsdom.
+// jsdom does not implement PointerEvent (see jsdom/jsdom#2527), so
+// fireEvent.pointerDown/pointerUp dispatch a bare Event whose clientX/clientY
+// end up undefined. Extending MouseEvent restores those fields for tests that
+// simulate swipe/drag gestures via pointer events.
+// ---------------------------------------------------------------------------
+if (typeof window !== 'undefined' && typeof window.PointerEvent === 'undefined') {
+  class PointerEventPolyfill extends MouseEvent {
+    public pointerId: number;
+    public pointerType: string;
+    public isPrimary: boolean;
+
+    constructor(type: string, params: PointerEventInit = {}) {
+      super(type, params);
+      this.pointerId = params.pointerId ?? 0;
+      this.pointerType = params.pointerType ?? 'mouse';
+      this.isPrimary = params.isPrimary ?? true;
+    }
+  }
+  // @ts-expect-error -- assigning the polyfill onto the jsdom Window global.
+  window.PointerEvent = PointerEventPolyfill;
+}
+
+// ---------------------------------------------------------------------------
 // Canvas 2D mock for jsdom (no native `canvas` package required).
 // Implements a software-rendered RGBA buffer that supports the operations
 // needed by FossilMask: arc/fill, drawImage, clearRect, getImageData.
