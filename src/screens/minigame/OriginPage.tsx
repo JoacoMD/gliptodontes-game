@@ -13,7 +13,7 @@ export function OriginPage(): React.JSX.Element {
       helpContent={{
         body: [
           'Para cada animal, elegí de qué continente venía.',
-          'Si acertás, ¡bien! Si no, te decimos la respuesta correcta.',
+          'Si acertás, ¡bien! En caso de necesitar una pista presiona el boton de informacion al lado de la imagen.',
         ],
         ctaLabel: 'Empezar',
       }}

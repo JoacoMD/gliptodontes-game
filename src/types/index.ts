@@ -49,7 +49,8 @@ export interface QuizQuestion {
   id: string;
   prompt: string;
   imageKey?: string;
-  options: { id: string; label: string; correct: boolean }[];
+  isSudamerican: boolean;
+  hint: string;
 }
 
 export interface MinigameResult {
