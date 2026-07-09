@@ -62,12 +62,26 @@ export interface MinigameResult {
   didYouKnow?: string;
 }
 
-export interface FossilAR {
+export interface Fossil {
   id: string;
   name: string;
-  lat: number;
-  lng: number;
+  funfact: string;
   model: string;
   scale: number;
-  funfact: string;
+}
+
+export interface FossilData extends Fossil {
+  locations: Coords[];
+}
+
+export interface FossilMarker extends Fossil {
+  lat: number;
+  lng: number;
+  heading: number;
+  distance: number;
+}
+
+export interface Coords {
+  lat: number;
+  lng: number;
 }

@@ -2,10 +2,14 @@ import { useEffect, useRef } from 'react';
 import { useJsApiLoader } from '@react-google-maps/api';
 
 interface StreetViewPanelProps {
-  onReady?: (panorama: google.maps.StreetViewPanorama) => void;
+  initialPosition: google.maps.LatLngLiteral;
+  onReady?: (
+    panorama: google.maps.StreetViewPanorama,
+  ) => void;
 }
 
 export function StreetViewPanel({
+  initialPosition,
   onReady,
 }: StreetViewPanelProps): React.JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
@@ -20,10 +24,7 @@ export function StreetViewPanel({
     const panorama = new google.maps.StreetViewPanorama(
       ref.current,
       {
-        position: {
-          lat: -34.9214,
-          lng: -57.9544,
-        },
+        position: initialPosition,
         pov: {
           heading: 0,
           pitch: 0,
@@ -39,7 +40,7 @@ export function StreetViewPanel({
     );
 
     onReady?.(panorama);
-  }, [isLoaded]);
+  }, [isLoaded, initialPosition]);
 
   return (
     <div

@@ -1,14 +1,10 @@
 import { Canvas } from '@react-three/fiber';
 import { signedAngleDifference } from './util/signedAngleDifference';
-import { FossilAR } from '@/types';
+import { FossilMarker } from '@/types';
 import { FossilModel } from './FossilModel';
 import { useEffect } from 'react'
 import { closeEnough } from './util/closeEnough';
 
-interface FossilMarker extends FossilAR {
-  heading: number;
-  distance: number;
-}
 
 interface Props {
   heading: number; // dirección del jugador en Street View
@@ -45,50 +41,52 @@ export function FossilOverlay({
       <ambientLight intensity={0.5} />
       <directionalLight position={[5, 5, 5]} intensity={1} />
 
-      {fossils.map((fossil) => {
-        const dx = signedAngleDifference(
-          heading,
-          fossil.heading,
-        );
+      {
+        fossils.map((fossil) => {
+          const dx = signedAngleDifference(
+            heading,
+            fossil.heading,
+          );
 
-        const visible = Math.abs(dx) < 60;
-        const close = fossil.distance < 80;
-        if (!(visible && close)) { return null };
+          const visible = Math.abs(dx) < 60;
+          const close = fossil.distance < 80;
+          if (!(visible && close)) { return null };
 
-        // eje X = izquierda/derecha según heading
-        const x = dx / 15;
+          // eje X = izquierda/derecha según heading
+          const x = dx / 15;
 
-        // eje Y = pitch (arriba/abajo)
-        const y = -pitch / 15;
+          // eje Y = pitch (arriba/abajo)
+          const y = -pitch / 15;
 
-        const scale = Math.max(
-          0.2,
-          Math.min(3, 100 / fossil.distance),
-        );
+          const scale = Math.max(
+            0.2,
+            Math.min(3, 100 / fossil.distance),
+          );
 
-        return (
-          <group
-            key={fossil.id}
-            position={[x, y, 0]}
-            scale={scale}
-          >
-            {closeEnough(
-              heading,
-              fossil.heading,
-              fossil.distance,
-              50,
-              6,
-            ) && (
-                <pointLight
-                  color="yellow"
-                  intensity={10}
-                  distance={50}
-                />
-              )}
-            <FossilModel fossil={fossil} />
-          </group>
-        );
-      })}
+          return (
+            <group
+              key={fossil.id}
+              position={[x, y, 0]}
+              scale={scale}
+            >
+              {closeEnough(
+                heading,
+                fossil.heading,
+                fossil.distance,
+                50,
+                6,
+              ) && (
+                  <pointLight
+                    color="yellow"
+                    intensity={10}
+                    distance={50}
+                  />
+                )}
+              <FossilModel fossil={fossil} />
+            </group>
+          );
+        })
+      }
     </Canvas>
   );
 }

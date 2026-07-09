@@ -1,22 +1,27 @@
 // FossilModel.tsx
 
 import { useGLTF } from '@react-three/drei';
-import { FossilAR } from '@/types';
+import { Fossil } from '@/types';
+import { useMemo } from 'react';
+import { fossilsAR } from '@/data/fossilsAR';
 
 interface Props {
-  fossil: FossilAR;
+  fossil: Fossil;
 }
 
 export function FossilModel({ fossil }: Props) {
-  const gltf = useGLTF(fossil.model);
+  const { scene } = useGLTF(fossil.model);
+
+  const clone = useMemo(() => scene.clone(), [scene]);
+
   return (
     <primitive
-      object={gltf.scene}
+      object={clone}
       scale={fossil.scale}
     />
   );
 }
 
-useGLTF.preload(
-  '/assets/models3D/gliptodonte3D.glb',
-);
+fossilsAR.forEach((fossil) => {
+  useGLTF.preload(fossil.model);
+});
