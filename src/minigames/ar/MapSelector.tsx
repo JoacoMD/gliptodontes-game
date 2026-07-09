@@ -39,7 +39,7 @@ export function MapSelector({
           width: '100%',
           height: '100%',
         }}
-        zoom={15}
+        zoom={13}
         options={{
           disableDefaultUI: true,
         }}
