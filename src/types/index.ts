@@ -32,6 +32,10 @@ export interface Mission {
   iconKey?: string;
   /** Solo aplica a misiones de excavación. Si no se especifica, se usa el shape default. */
   fossilShapeId?: string;
+  /** Imagen descriptiva del minijuego, para asociación visual. Opcional. */
+  image?: string;
+  /** Texto alternativo de `image`. Si falta, la imagen se trata como decorativa (alt=""). */
+  imageAlt?: string;
 }
 
 export interface LearnTopic {
@@ -45,7 +49,8 @@ export interface QuizQuestion {
   id: string;
   prompt: string;
   imageKey?: string;
-  options: { id: string; label: string; correct: boolean }[];
+  isSudamerican: boolean;
+  hint: string;
 }
 
 export interface MinigameResult {
@@ -57,12 +62,26 @@ export interface MinigameResult {
   didYouKnow?: string;
 }
 
-export interface FossilAR {
+export interface Fossil {
   id: string;
   name: string;
-  lat: number;
-  lng: number;
+  funfact: string;
   model: string;
   scale: number;
-  funfact: string;
+}
+
+export interface FossilData extends Fossil {
+  locations: Coords[];
+}
+
+export interface FossilMarker extends Fossil {
+  lat: number;
+  lng: number;
+  heading: number;
+  distance: number;
+}
+
+export interface Coords {
+  lat: number;
+  lng: number;
 }

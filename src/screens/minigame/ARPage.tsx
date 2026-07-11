@@ -15,9 +15,11 @@ import { ResultModal } from '@/components/modals/ResultModal';
 
 import { StreetViewPanel } from '@/minigames/ar/StreetViewPanel';
 
+import { MapSelector } from '@/minigames/ar/MapSelector';
+
 import { FossilOverlay } from '@/minigames/ar/FossilOverlay';
 
-import type { MinigameResult } from '@/types';
+import type { FossilMarker, MinigameResult } from '@/types';
 import { useNavigate } from 'react-router-dom';
 import { RoutePaths } from '@/config/Constants';
 
@@ -35,6 +37,7 @@ export function ARPage(): React.JSX.Element {
   const [pitch, setPitch] = useState(0);
   const [playerPosition, setPlayerPosition] =
     useState<google.maps.LatLng | null>(null);
+  const [startLocation, setStartLocation] = useState<google.maps.LatLngLiteral | null>(null,);
 
   useEffect(() => {
     console.log('ARPage mounted');
@@ -44,11 +47,41 @@ export function ARPage(): React.JSX.Element {
     };
   }, []);
 
+  const fossils: FossilMarker[] = [];
+  if (playerPosition != null) {
+    for (const f of fossilsAR) {
+      let i = 0;
+      for (const l of f.locations) {
+        fossils.push({
+          id: `${f.id + i}`,
+          name: `${f.name}`,
+          model: `${f.model}`,
+          scale: f.scale,
+          funfact: `${f.funfact}`,
+          lat: l.lat,
+          lng: l.lng,
+          heading: calculateBearing(
+            playerPosition.lat(),
+            playerPosition.lng(),
+            l.lat,
+            l.lng,
+          ),
+          distance: calculateDistance(
+            playerPosition.lat(),
+            playerPosition.lng(),
+            l.lat,
+            l.lng,
+          )
+        })
+      }
+    }
+  }
+
   const visibleFossils = playerPosition == null ? [] : (() => {
     const playerLat = playerPosition.lat();
     const playerLng = playerPosition.lng();
 
-    return fossilsAR.map((fossil) => ({
+    return fossils.map((fossil) => ({
       ...fossil,
       heading: calculateBearing(
         playerLat,
@@ -68,7 +101,7 @@ export function ARPage(): React.JSX.Element {
   const fossilsWithRuntimeData = useMemo(() => {
     if (!playerPosition) return [];
 
-    return fossilsAR.map((fossil) => {
+    return fossils.map((fossil) => {
       const headingToFossil = calculateBearing(
         playerPosition.lat(),
         playerPosition.lng(),
@@ -145,8 +178,8 @@ export function ARPage(): React.JSX.Element {
 
   const helpContent: HowToPlayContent = {
     body: [
-      'Apuntá con la cámara hacia el animal del pasado.',
-      'Cuando lo tengas centrado el fosil será iluminado, entonces tocá el botón "Identificar".',
+      'Primero elegí un sitio en el mapa para comenzar la exploración.',
+      'Luego, buscá el fósil. Cuando quede iluminado, tocá el botón "Identificar" para descubrir de qué animal se trata.',
     ],
     ctaLabel: 'Comenzar',
   };
@@ -185,25 +218,42 @@ export function ARPage(): React.JSX.Element {
     );
   };
 
-  // const heading = panoramaRef.current?.getPov().heading;
-  // const position = panoramaRef.current?.getPosition;
 
   return (
     <section className="relative h-full w-full z-0 overflow-hidden">
-      <StreetViewPanel onReady={handleStreetViewReady} />
-
-      <div className="absolute inset-0 z-10 pointer-events-none">
-        <FossilOverlay
-          heading={heading}
-          pitch={pitch}
-          fossils={visibleFossils}
-        />
-
-      </div>
+      {!startLocation ? (
+        <MapSelector onLocationSelected={setStartLocation} />
+      ) : (
+        <>
+          {playerPosition && (
+            <div className="absolute inset-0 z-10 pointer-events-none">
+              <FossilOverlay
+                heading={heading}
+                pitch={pitch}
+                fossils={visibleFossils}
+              />
+            </div>
+          )}
+          <StreetViewPanel onReady={handleStreetViewReady} initialPosition={startLocation} />
+          <div className="absolute bottom-8 left-1/2 z-20 -translate-x-1/2">
+            <Button size="lg" onClick={identifyFossil}>
+              Identificar
+            </Button>
+          </div>
+          <Button
+            variant="secondary"
+            size="md"
+            className="absolute right-3 top-3 z-20 bg-panel/90"
+            onClick={() => setStartLocation(null)}
+          >
+            Mapa
+          </Button>
+        </>
+      )}
       {/* Botón salir */}
       <Button
         variant="secondary"
-        size="sm"
+        size="md"
         className="absolute left-3 top-3 z-20 bg-panel/90"
         onClick={() => navigate(RoutePaths.Missions)}
       >
@@ -214,11 +264,6 @@ export function ARPage(): React.JSX.Element {
       <HelpButton onClick={() => setHelpOpen(true)} />
 
       {/* Botón identificar */}
-      <div className="absolute bottom-8 left-1/2 z-20 -translate-x-1/2">
-        <Button size="lg" onClick={identifyFossil}>
-          Identificar
-        </Button>
-      </div>
 
       <HowToPlayModal
         id="ar-how-to-play"
