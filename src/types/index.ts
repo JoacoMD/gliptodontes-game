@@ -38,11 +38,29 @@ export interface Mission {
   imageAlt?: string;
 }
 
-export interface LearnTopic {
+export interface LearnCategory {
   id: string;
   title: string;
   summary: string;
+}
+
+export interface LearnFact {
+  /** Etiqueta del dato, ej. 'Época', 'Tamaño', 'Qué comía'. */
+  label: string;
+  value: string;
+}
+
+export interface LearnTopic {
+  id: string;
+  /** Referencia a `LearnCategory.id`. */
+  categoryId: string;
+  title: string;
+  summary: string;
+  /** Datos clave (opcional): las fichas de animales los usan. */
+  facts?: LearnFact[];
   paragraphs: string[];
+  /** Bloque destacado "¿Sabías que?" (opcional). */
+  didYouKnow?: string;
 }
 
 export interface QuizQuestion {

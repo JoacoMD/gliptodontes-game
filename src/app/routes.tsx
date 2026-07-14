@@ -5,6 +5,7 @@ import { AppShell } from '@/components/layout/AppShell';
 import { MainMenu } from '@/screens/MainMenu';
 import { Missions } from '@/screens/Missions';
 import { Learn } from '@/screens/Learn';
+import { LearnCategory } from '@/screens/LearnCategory';
 import { LearnTopic } from '@/screens/LearnTopic';
 import { SettingsPage } from '@/screens/Settings';
 
@@ -34,7 +35,8 @@ const routes: RouteObject[] = [
       { index: true, element: <MainMenu /> },
       { path: 'misiones', element: <Missions /> },
       { path: 'aprender', element: <Learn /> },
-      { path: 'aprender/:topicId', element: <LearnTopic /> },
+      { path: 'aprender/:categoryId', element: <LearnCategory /> },
+      { path: 'aprender/:categoryId/:topicId', element: <LearnTopic /> },
       { path: 'ajustes', element: <SettingsPage /> },
       {
         path: 'minijuego/ar',
