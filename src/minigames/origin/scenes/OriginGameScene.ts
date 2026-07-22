@@ -13,7 +13,6 @@ export class OriginGameScene extends MinigameSceneBase {
 
   private currentQuestion = 0;
   private correctAnswers = 0;
-  private progressText!: Phaser.GameObjects.Text;
   private questionText!: Phaser.GameObjects.Text;
   private animalImage!: Phaser.GameObjects.Image;
   private hintContainer!: Phaser.GameObjects.Container;
@@ -22,17 +21,42 @@ export class OriginGameScene extends MinigameSceneBase {
   private sudamericaButtonId = "sudamerica-button";
   private imageFrameId = "image-frame";
   private infoButtonId = "info-button";
+  private feedbackText!: Phaser.GameObjects.Text;
+  private norteamericaButton!: Phaser.GameObjects.Image;
+  private sudamericaButton!: Phaser.GameObjects.Image;
+  private answering = false;
 
+  private async showFeedback(correct: boolean): Promise<void> {
+    this.feedbackText
+      .setText(correct ? '✔' : '✖')
+      .setColor(correct ? '#4CAF50' : '#F44336')
+      .setScale(0.2)
+      .setAlpha(1)
+      .setVisible(true);
+
+    this.tweens.add({
+      targets: this.feedbackText,
+      scale: 1,
+      duration: 250,
+      ease: 'Back.Out'
+    });
+
+    await new Promise<void>(resolve =>
+      this.time.delayedCall(700, () => resolve())
+    );
+
+    this.tweens.add({
+      targets: this.feedbackText,
+      alpha: 0,
+      duration: 200,
+      onComplete: () => this.feedbackText.setVisible(false)
+    });
+  }
   private showQuestion() {
     const q = ORIGIN_QUIZ[this.currentQuestion];
 
     this.questionText.setText(q.prompt);
     this.animalImage.setTexture(q.id);
-  }
-  private updateProgress() {
-    this.progressText.setText(
-      `${this.correctAnswers}/${ORIGIN_QUIZ.length}`
-    );
   }
   private showHint() {
     const q = ORIGIN_QUIZ[this.currentQuestion];
@@ -41,42 +65,56 @@ export class OriginGameScene extends MinigameSceneBase {
     this.hintContainer.setVisible(true);
   }
 
-  private answer(isSouthAmerica: boolean) {
+  private setButtonsEnabled(enabled: boolean) {
+    if (enabled) {
+      this.norteamericaButton.setInteractive();
+      this.sudamericaButton.setInteractive();
+    } else {
+      this.norteamericaButton.disableInteractive();
+      this.sudamericaButton.disableInteractive();
+    }
+  }
+  private async answer(isSouthAmerica: boolean) {
+    if (this.answering) return;
+    this.answering = true;
+    this.setButtonsEnabled(false);
     const q = ORIGIN_QUIZ[this.currentQuestion];
-
+    this.currentQuestion++;
     if (q.isSudamerican === isSouthAmerica) {
-
       this.correctAnswers++;
-      this.updateProgress();
-
-      this.currentQuestion++;
-
-      if (this.currentQuestion === ORIGIN_QUIZ.length) {
+      await this.showFeedback(true);
+    } else {
+      await this.showFeedback(false);
+    }
+    if (this.currentQuestion === ORIGIN_QUIZ.length) {
+      this.answering = false;
+      if (this.correctAnswers >= 7) {
         this.succeed({
           variant: 'success',
           title: '¡Excelente!',
-          body: 'Completaste todas las preguntas.',
+          body: `Completaste todas las preguntas con una puntuacion de ${this.correctAnswers}/${ORIGIN_QUIZ.length}.`,
           primaryCta: { label: 'Volver a jugar', action: 'retry' },
           secondaryCta: { label: 'Volver a misiones', action: 'menu' },
         });
         this.currentQuestion = 0;
         this.correctAnswers = 0;
+
       } else {
-        this.showQuestion();
+        this.fail({
+          variant: 'failure',
+          title: '¡Oops!',
+          body: `Realizaste ${this.correctAnswers} ${this.correctAnswers == 1 ? ' respuesta correcta' : ' respuestas correctas'}. Probá de nuevo.`,
+          primaryCta: { label: 'Intentar de nuevo', action: 'retry' },
+          secondaryCta: { label: 'Volver a misiones', action: 'menu' },
+        });
+
+        this.currentQuestion = 0;
+        this.correctAnswers = 0;
       }
-
-    } else {
-      this.fail({
-        variant: 'failure',
-        title: '¡Oops!',
-        body: `Esa no era. Realizaste ${this.currentQuestion}${this.currentQuestion == 1 ? ' respuesta correcta' : ' respuestas correctas'}. Probá de nuevo.`,
-        primaryCta: { label: 'Intentar de nuevo', action: 'retry' },
-        secondaryCta: { label: 'Volver a misiones', action: 'menu' },
-      });
-
-      this.currentQuestion = 0;
-      this.correctAnswers = 0;
     }
+    this.showQuestion();
+    this.answering = false;
+    this.setButtonsEnabled(true);
   }
 
   preload() {
@@ -95,17 +133,17 @@ export class OriginGameScene extends MinigameSceneBase {
 
     const cx = GameSize.width / 2;
 
-
-    this.progressText = this.add
-      .text(cx, 150,
-        `${this.correctAnswers}/${ORIGIN_QUIZ.length}`,
-        {
-          fontFamily: 'Darumadrop One, Georgia, serif',
-          fontSize: '48px',
-          color: `#${palette.accent.toString(16).padStart(6, '0')}`,
-          align: 'center',
-        })
-      .setOrigin(0.5);
+    this.feedbackText = this.add
+      .text(GameSize.width / 2, GameSize.height / 2, '', {
+        fontFamily: 'Darumadrop One',
+        fontSize: '120px',
+        color: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 10,
+      })
+      .setOrigin(0.5)
+      .setDepth(100)
+      .setVisible(false);
 
     this.questionText = this.add
       .text(cx, 220, '', {
@@ -151,70 +189,70 @@ export class OriginGameScene extends MinigameSceneBase {
     });
 
     const iy = 950
-    const norteamericaButton = this.add
+    this.norteamericaButton = this.add
       .image(cx, iy, this.norteamericaButtonId)
       .setScale(0.85)
       .setInteractive()
       .on(Phaser.Input.Events.POINTER_DOWN, () => {
         this.answer(false)
       });
-    norteamericaButton.on('pointerover', () => {
+    this.norteamericaButton.on('pointerover', () => {
       this.tweens.add({
-        targets: norteamericaButton,
+        targets: this.norteamericaButton,
         scale: 0.90,
         duration: 100
       });
     });
-    norteamericaButton.on('pointerout', () => {
+    this.norteamericaButton.on('pointerout', () => {
       this.tweens.add({
-        targets: norteamericaButton,
+        targets: this.norteamericaButton,
         scale: 0.85,
         duration: 100
       });
     });
-    norteamericaButton.on(Phaser.Input.Events.POINTER_DOWN, () => {
-      norteamericaButton.setTint(0xb0b0b0);
+    this.norteamericaButton.on(Phaser.Input.Events.POINTER_DOWN, () => {
+      this.norteamericaButton.setTint(0xb0b0b0);
     });
 
-    norteamericaButton.on(Phaser.Input.Events.POINTER_UP, () => {
-      norteamericaButton.clearTint();
+    this.norteamericaButton.on(Phaser.Input.Events.POINTER_UP, () => {
+      this.norteamericaButton.clearTint();
     });
 
-    norteamericaButton.on(Phaser.Input.Events.POINTER_OUT, () => {
-      norteamericaButton.clearTint();
+    this.norteamericaButton.on(Phaser.Input.Events.POINTER_OUT, () => {
+      this.norteamericaButton.clearTint();
     });
 
-    const sudamericaButton = this.add
+    this.sudamericaButton = this.add
       .image(cx, iy + 150, this.sudamericaButtonId)
       .setScale(0.85)
       .setInteractive()
       .on(Phaser.Input.Events.POINTER_DOWN, () => {
         this.answer(true)
       });
-    sudamericaButton.on('pointerover', () => {
+    this.sudamericaButton.on('pointerover', () => {
       this.tweens.add({
-        targets: sudamericaButton,
+        targets: this.sudamericaButton,
         scale: 0.90,
         duration: 100
       });
     });
-    sudamericaButton.on('pointerout', () => {
+    this.sudamericaButton.on('pointerout', () => {
       this.tweens.add({
-        targets: sudamericaButton,
+        targets: this.sudamericaButton,
         scale: 0.85,
         duration: 100
       });
     });
-    sudamericaButton.on(Phaser.Input.Events.POINTER_DOWN, () => {
-      sudamericaButton.setTint(0xb0b0b0);
+    this.sudamericaButton.on(Phaser.Input.Events.POINTER_DOWN, () => {
+      this.sudamericaButton.setTint(0xb0b0b0);
     });
 
-    sudamericaButton.on(Phaser.Input.Events.POINTER_UP, () => {
-      sudamericaButton.clearTint();
+    this.sudamericaButton.on(Phaser.Input.Events.POINTER_UP, () => {
+      this.sudamericaButton.clearTint();
     });
 
-    sudamericaButton.on(Phaser.Input.Events.POINTER_OUT, () => {
-      sudamericaButton.clearTint();
+    this.sudamericaButton.on(Phaser.Input.Events.POINTER_OUT, () => {
+      this.sudamericaButton.clearTint();
     });
     // Mostrar la primera pregunta
     this.showQuestion();
@@ -274,4 +312,5 @@ export class OriginGameScene extends MinigameSceneBase {
 
     this.hintContainer.setVisible(false);
   }
+
 }

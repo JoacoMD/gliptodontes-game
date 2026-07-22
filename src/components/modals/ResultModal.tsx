@@ -7,6 +7,7 @@ export interface ResultModalProps {
   result: MinigameResult | null;
   didYouKnow?: string;
   onAction: (action: 'retry' | 'next' | 'menu') => void;
+  image?: string;
 }
 
 export function ResultModal({
@@ -15,6 +16,7 @@ export function ResultModal({
   result,
   didYouKnow,
   onAction,
+  image,
 }: ResultModalProps): React.JSX.Element | null {
   if (!result) return null;
   return (
@@ -44,6 +46,15 @@ export function ResultModal({
       ]}
       narratable={`${result.title}. , ${result.body}. , ${didYouKnow ? '¿Sabías que...' + didYouKnow : ''}. , ${result.primaryCta.label}. , ${result.secondaryCta?.label ?? ''}`}
     >
+      {image && (
+        <div className="flex justify-center mb-4">
+          <img
+            src={image}
+            alt="Ilustración del animal"
+            className="max-h-64 w-auto object-contain rounded-lg border border-panel-border"
+          />
+        </div>
+      )}
       {didYouKnow && (
         <p className="rounded-lg border border-panel-border bg-background/40 p-3 text-sm text-text-secondary">
           <strong>¿Sabías que…</strong> {didYouKnow}

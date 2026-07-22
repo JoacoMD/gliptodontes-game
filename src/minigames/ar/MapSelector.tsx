@@ -62,6 +62,9 @@ export function MapSelector({
                 lng: location.lng,
               }}
               title={fossil.name}
+              options={{
+                clickable: false,
+              }}
               icon={{
                 url: '/assets/ui/map-marker.png',
                 scaledSize: new google.maps.Size(42, 42)
@@ -83,7 +86,7 @@ export function MapSelector({
             }
           }}
         >
-          Comenzar
+          Investigar
         </Button>
       </div>
     </div>

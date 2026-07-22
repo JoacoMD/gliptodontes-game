@@ -92,7 +92,7 @@ export function Missions(): React.JSX.Element {
               { interrupt: true },
             )
           }
-          aria-label="Escuchar descripción de esta misión"
+          aria-label="Escuchar lista de misiones"
           className="transition-[transform,filter] duration-200 hover:scale-105 hover:drop-shadow-[0_0_18px_rgba(255,193,107,0.85)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus rounded-lg"
         >
           <img src="/assets/ui/gliptodontes-sonido.png" alt="" aria-hidden="true" className="h-16 w-16" />
@@ -111,7 +111,7 @@ export function Missions(): React.JSX.Element {
         onPointerUp={onPointerUp}
         className="relative flex flex-1 items-center justify-center rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
       >
-      {/* eslint-enable jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/no-noninteractive-tabindex */}
+        {/* eslint-enable jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/no-noninteractive-tabindex */}
         {/* resplandor dorado detrás de la activa (decorativo, siempre visible) */}
         <div
           aria-hidden="true"

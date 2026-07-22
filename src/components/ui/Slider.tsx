@@ -30,13 +30,13 @@ export function Slider({
         <label
           id={labelId}
           htmlFor={id}
-          className="text-base text-text-primary"
+          className="text-xl text-base text-text-primary"
         >
           {label}
         </label>
         <span
           id={valueId}
-          className="text-sm text-text-secondary"
+          className="text-lg text-text-secondary"
         >
           {display}
         </span>

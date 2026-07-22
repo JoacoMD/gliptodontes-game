@@ -30,7 +30,8 @@ export const fossilsAR: FossilData[] = [
     ],
     model: '/assets/models3D/arctotherium3D.glb',
     scale: 0.06,
-    funfact: 'El Arctotherium fue uno de los osos más grandes que existieron. Al ponerse de pie podía superar los 3 metros de altura.'
+    funfact: 'El Arctotherium fue uno de los osos más grandes que existieron. Al ponerse de pie podía superar los 3 metros de altura.',
+    image: '/assets/animals/oso-caras-cortas.png'
   },
   {
     id: 'smilodon',
@@ -49,6 +50,7 @@ export const fossilsAR: FossilData[] = [
     scale: 0.06,
     funfact:
       'El Smilodon no era un tigre verdadero. Sus colmillos podían superar los 20 cm de longitud.',
+    image: '/assets/animals/smilodon.png'
   },
   {
     id: 'canis',
@@ -61,7 +63,8 @@ export const fossilsAR: FossilData[] = [
     ],
     model: '/assets/models3D/canis3D.glb',
     scale: 0.06,
-    funfact: 'Los antiguos Canis eran excelentes corredores y cazaban aprovechando su resistencia para perseguir a sus presas.'
+    funfact: 'Los antiguos Canis eran excelentes corredores y cazaban aprovechando su resistencia para perseguir a sus presas.',
+    image: '/assets/animals/canis.png'
   },
   {
     id: 'stegomastodon',
@@ -85,7 +88,8 @@ export const fossilsAR: FossilData[] = [
     ],
     model: '/assets/models3D/stegomastodon3D.glb',
     scale: 0.1,
-    funfact: 'El Stegomastodon era un pariente de los elefantes actuales. Sus enormes colmillos podían medir más de 2 metros de largo.'
+    funfact: 'El Stegomastodon era un pariente de los elefantes actuales. Sus enormes colmillos podían medir más de 2 metros de largo.',
+    image: '/assets/animals/mastodonte.png'
   },
   {
     id: 'lama',
@@ -100,7 +104,9 @@ export const fossilsAR: FossilData[] = [
     ],
     model: '/assets/models3D/lama3D.glb',
     scale: 0.06,
-    funfact: 'Las llamas son parientes de los camellos, pero no tienen jorobas. Sus antepasados llegaron a Sudamérica hace millones de años.'
+    funfact: 'Las llamas son parientes de los camellos, pero no tienen jorobas. Sus antepasados llegaron a Sudamérica hace millones de años.',
+    image: '/assets/animals/guanaco.png'
+
   },
   {
     id: 'hemiauchenia',
@@ -116,6 +122,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: 'Aunque se parecía a una llama actual, Hemiauchenia era mucho más grande y formó parte de la fauna que habitó Sudamérica durante el Pleistoceno.',
+    image: '/assets/animals/hemiauchenia.png'
   },
   {
     id: 'epieuryceros',
@@ -124,6 +131,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: 'A diferencia de los ciervos actuales, las impresionantes astas de Epieuryceros podían alcanzar un tamaño excepcional, convirtiéndolo en uno de los cérvidos más llamativos de Sudamérica.',
+    image: '/assets/animals/epieuryceros.png'
   },
   {
     id: 'morenelaphus',
@@ -132,6 +140,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: 'A pesar de su gran tamaño, Morenelaphus era un herbívoro que se alimentaba de pastos y otras plantas de las llanuras sudamericanas.',
+    image: '/assets/animals/morenelaphus.png'
   },
   {
     id: 'catagonus',
@@ -140,6 +149,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: '',
+    image: '/assets/animals/catagonus.png'
   },
   {
     id: 'equus-amerhippus',
@@ -148,6 +158,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: 'Equus (Amerhippus) era un caballo prehistórico adaptado a las extensas llanuras sudamericanas, donde recorría grandes distancias en busca de alimento.',
+    image: '/assets/animals/equus.png'
   },
   {
     id: 'lagostomus',
@@ -156,6 +167,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: 'Lagostomus pertenece al mismo género que las vizcachas actuales. ¡Sus descendientes todavía habitan las llanuras de Argentina y otros países de Sudamérica!',
+    image: '/assets/animals/lagostomus.png'
   },
   {
     id: 'dolichotis',
@@ -167,7 +179,8 @@ export const fossilsAR: FossilData[] = [
     ],
     model: '/assets/models3D/dolichotis3D.glb',
     scale: 0.06,
-    funfact: 'El Dolichotis es un pariente de los cuyes y los carpinchos. ¡Es uno de los roedores más grandes del mundo!'
+    funfact: 'El Dolichotis es un pariente de los cuyes y los carpinchos. ¡Es uno de los roedores más grandes del mundo!',
+    image: '/assets/animals/dolichotis.png'
   },
   {
     id: 'myocastor',
@@ -179,7 +192,8 @@ export const fossilsAR: FossilData[] = [
     ],
     model: '/assets/models3D/myokastor3D.glb',
     scale: 0.06,
-    funfact: 'El Myocastor, también conocido como coipo, es un excelente nadador. Sus patas traseras tienen membranas que lo ayudan a desplazarse en el agua.'
+    funfact: 'El Myocastor, también conocido como coipo, es un excelente nadador. Sus patas traseras tienen membranas que lo ayudan a desplazarse en el agua.',
+    image: '/assets/animals/myocastor.png'
   },
   {
     id: 'microcavia',
@@ -188,6 +202,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: 'Microcavia es un pariente cercano de los cuis actuales, pequeños roedores que todavía viven en gran parte de Sudamérica.',
+    image: '/assets/animals/microcavia.png'
   },
   {
     id: 'mesotherium',
@@ -199,6 +214,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: 'Mesotherium era un mamífero herbívoro exclusivo de Sudamérica. Sus dientes crecían continuamente, una adaptación ideal para alimentarse de vegetación dura y abrasiva.',
+    image: '/assets/animals/mesotherium.png'
   },
   {
     id: 'toxodon',
@@ -210,7 +226,9 @@ export const fossilsAR: FossilData[] = [
     ],
     model: '/assets/models3D/toxodon3D.glb',
     scale: 0.06,
-    funfact: 'El Toxodon tenía un aspecto parecido al de un hipopótamo, pero en realidad no estaba emparentado con él.'
+    funfact: 'El Toxodon tenía un aspecto parecido al de un hipopótamo, pero en realidad no estaba emparentado con él.',
+    image: '/assets/animals/toxodon.png'
+
   },
   {
     id: 'macrauchenia',
@@ -222,6 +240,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: 'Macrauchenia tenía un hocico alargado con una pequeña trompa flexible, similar a la de un tapir, que le ayudaba a alcanzar hojas y brotes.',
+    image: '/assets/animals/macrauchenia.png'
   },
   {
     id: 'macraucheniopsis',
@@ -233,6 +252,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: 'Los litopternos, como Macraucheniopsis, evolucionaron de forma aislada en Sudamérica durante millones de años, desarrollando características similares a las de otros mamíferos de distintos continentes.',
+    image: '/assets/animals/macraucheniopsis.png'
   },
   {
     id: 'doedicurus',
@@ -246,6 +266,8 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: 'Doedicurus tenía una enorme maza ósea en la punta de la cola, que probablemente utilizaba para defenderse y competir con otros individuos.',
+    image: '/assets/animals/doedicurus.png'
+
   },
   {
     id: 'glyptodon',
@@ -261,6 +283,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/gliptodonte3D.glb',
     scale: 0.06,
     funfact: 'Los gliptodontes poseían un caparazón óseo que protegía gran parte de su cuerpo.',
+    image: '/assets/animals/gliptodonte.png'
   },
   {
     id: 'neosclerocalyptus',
@@ -269,6 +292,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: '',
+    image: '/assets/animals/neosclerocalyptus.png'
   },
   {
     id: 'lomaphorus',
@@ -280,6 +304,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: 'Aunque no alcanzaba el tamaño de otros gliptodontes gigantes, Lomaphorus contaba con una sólida coraza que lo protegía de los depredadores.',
+    image: '/assets/animals/gliptodonte.png'
   },
   {
     id: 'panochthus',
@@ -291,6 +316,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: 'Aunque era un pariente lejano de los armadillos actuales, Panochthus podía alcanzar el tamaño de un automóvil pequeño.',
+    image: '/assets/animals/panochthus.png'
   },
   {
     id: 'pampatherium',
@@ -299,6 +325,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: 'Aunque parecía un gliptodonte en miniatura, Pampatherium pertenecía a un grupo distinto de mamíferos acorazados y tenía una armadura mucho más flexible.',
+    image: '/assets/animals/pampatherium.png'
   },
   {
     id: 'eutatus',
@@ -311,6 +338,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: 'Sus poderosas patas delanteras y largas garras lo convertían en un excelente excavador de las llanuras sudamericanas.',
+    image: '/assets/animals/eutatus.png'
   },
   {
     id: 'propraopus',
@@ -319,6 +347,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: 'Propraopus era un armadillo gigante emparentado con los armadillos actuales. Su resistente caparazón le brindaba protección frente a los depredadores.',
+    image: '/assets/animals/propraopus.png'
   },
   {
     id: 'chaetophractus',
@@ -329,6 +358,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: 'A diferencia de muchos de sus parientes gigantes del Pleistoceno, Chaetophractus logró sobrevivir hasta la actualidad y aún puede encontrarse en Argentina.',
+    image: '/assets/animals/chaetophractus.png'
   },
   {
     id: 'scelidotherium',
@@ -337,6 +367,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: '',
+    image: '/assets/animals/scelidotherium.png'
   },
   {
     id: 'megatherium',
@@ -350,6 +381,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: '',
+    image: '/assets/animals/megaterio.png'
   },
   {
     id: 'scelidodon',
@@ -358,6 +390,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: '',
+    image: '/assets/animals/scelidodon.png'
   },
   {
     id: 'glossotherium',
@@ -366,6 +399,7 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: '',
+    image: '/assets/animals/glossotherium.png'
   },
   {
     id: 'lestodon',
@@ -374,5 +408,6 @@ export const fossilsAR: FossilData[] = [
     model: '/assets/models3D/default3D.glb',
     scale: 0.06,
     funfact: '',
+    image: '/assets/animals/lestodon.png'
   },
 ];

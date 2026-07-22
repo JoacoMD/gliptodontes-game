@@ -16,11 +16,11 @@ export function Toggle({ label, description, checked, onChange, id }: ToggleProp
   return (
     <div className="flex items-center justify-between gap-4 py-2">
       <div className="flex min-w-0 flex-col">
-        <label htmlFor={inputId} className="text-base text-text-primary">
+        <label htmlFor={inputId} className="text-xl text-base text-text-primary">
           {label}
         </label>
         {description && (
-          <span id={descId} className="text-sm text-text-secondary">
+          <span id={descId} className="text-xl text-text-secondary">
             {description}
           </span>
         )}

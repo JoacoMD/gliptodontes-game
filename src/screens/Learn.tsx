@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { RoutePaths } from '@/config/Constants';
-import { Button } from '@/components/ui/Button';
-import { LEARN_TOPICS } from '@/data/learnTopics';
+import { BoneButton } from '@/components/ui/BoneButton';
+import { LEARN_CATEGORIES } from '@/data/learnTopics';
 import { useNarrator } from '@/hooks/useNarrator';
 import { useEffect } from 'react';
 
@@ -17,8 +17,8 @@ export function Learn(): React.JSX.Element {
 
   const readLearnMenu = (() => {
     speak(`
-${LEARN_TOPICS.map(t => `${t.title}. ${t.summary}.`).join(' ')}
- ... 
+${LEARN_CATEGORIES.map(c => `${c.title}. ${c.summary}`).join(' ')}
+ ...
 Selecciona una tarjeta para comenzar a explorar. Cuando termines, utiliza el botón Volver para regresar al menú principal.
 `, {
       interrupt: true,
@@ -56,11 +56,11 @@ Selecciona una tarjeta para comenzar a explorar. Cuando termines, utiliza el bot
           items-center
         "
       >
-        {LEARN_TOPICS.map((t) => (
-          <li key={t.id} className="flex w-full justify-center">
+        {LEARN_CATEGORIES.map((c) => (
+          <li key={c.id} className="flex w-full justify-center">
             <button
               type="button"
-              onClick={() => navigate(`/aprender/${t.id}`)}
+              onClick={() => navigate(`/aprender/${c.id}`)}
               style={{
                 backgroundImage: "url('/assets/ui/gliptodontes-container%201.png')",
                 backgroundSize: '100% 100%',
@@ -70,19 +70,14 @@ Selecciona una tarjeta para comenzar a explorar. Cuando termines, utiliza el bot
       w-full
       max-w-[300px]
       md:max-w-[450px]
-
       min-h-[72px]
       md:min-h-[96px]
-
       pl-10
       md:pl-16
-
       pr-16
       md:pr-26
-
       py-10
       md:py-24
-
       text-left
       transition-[transform,filter]
       duration-200
@@ -96,25 +91,24 @@ Selecciona una tarjeta para comenzar a explorar. Cuando termines, utiliza el bot
             >
               <span className="flex w-full flex-col items-start gap-1 py-4 px-6 md:py-6 md:px-9">
                 <span className="text-lg md:text-xl font-bold text-text-primary">
-                  {t.title}
+                  {c.title}
                 </span>
-
                 <span className="text-xs md:text-sm font-normal text-text-secondary">
-                  {t.summary}
+                  {c.summary}
                 </span>
               </span>
             </button>
           </li>
         ))}
       </ul>
-      <Button
-        variant="ghost"
-        fullWidth
-        className="mt-6"
-        onClick={() => navigate(RoutePaths.MainMenu)}
-      >
-        Volver
-      </Button>
+      <div className="mt-6 flex items-center justify-start">
+        <BoneButton
+          onClick={() => navigate(RoutePaths.MainMenu)}
+          className="min-h-20 w-40 text-xl pb-2"
+        >
+          Volver
+        </BoneButton>
+      </div>
     </section >
   );
 }

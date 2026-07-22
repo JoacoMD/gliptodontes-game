@@ -23,7 +23,7 @@ export function SegmentedControl<T extends string>({
   const id = useId();
   return (
     <div className="flex flex-col gap-2 py-2">
-      <span id={id} className="text-base text-text-primary">
+      <span id={id} className="text-xl text-base text-text-primary">
         {label}
       </span>
       <ToggleGroup.Root
@@ -37,7 +37,7 @@ export function SegmentedControl<T extends string>({
           <ToggleGroup.Item
             key={opt.value}
             value={opt.value}
-            className="flex-1 px-3 py-2 text-sm text-text-primary transition-colors data-[state=on]:bg-accent data-[state=on]:text-white focus-visible:outline-2 focus-visible:outline-focus"
+            className="flex-1 px-3 py-2 text-md text-text-primary transition-colors data-[state=on]:bg-accent data-[state=on]:text-white focus-visible:outline-2 focus-visible:outline-focus"
           >
             {opt.label}
           </ToggleGroup.Item>
