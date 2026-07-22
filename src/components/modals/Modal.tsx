@@ -86,18 +86,18 @@ export function Modal({
 
           {narratable && (
             <div className="absolute right-4 top-4">
-              <Button
-                variant="secondary"
-                size="sm"
-                aria-label="Leer en voz alta"
+              <button
+                type="button"
                 onClick={() =>
                   speak(narrationText, {
                     interrupt: true,
                   })
                 }
+                aria-label="Leer en voz alta"
+                className="transition-[transform,filter] duration-200 hover:scale-105 hover:drop-shadow-[0_0_18px_rgba(255,193,107,0.85)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus rounded-lg"
               >
-                🔊
-              </Button>
+                <img src="/assets/ui/gliptodontes-sonido.png" alt="" aria-hidden="true" className="h-16 w-16" />
+              </button>
             </div>
           )}
 
@@ -129,6 +129,6 @@ export function Modal({
           </div>
         </Dialog.Content>
       </Dialog.Portal>
-    </Dialog.Root>
+    </Dialog.Root >
   );
 }

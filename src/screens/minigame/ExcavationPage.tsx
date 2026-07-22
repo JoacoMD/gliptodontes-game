@@ -30,10 +30,8 @@ export function ExcavationPage(): React.JSX.Element {
       helpContent={{
         title: '¿Cómo jugar?',
         body: [
-          'Tu trabajo se divide en dos fases.',
-          'Fase 1 — Hallar el contorno: usá el pico para retirar la tierra lejos del fósil y el cincel para limpiar la tierra cerca, hasta que se note la silueta del hueso. Si golpeás el fósil con el pico, lo rompés y perdés una vida.',
-          'Fase 2 — Revelar el fósil: cuando termines el contorno, pasás al pincel para descubrir el hueso sin dañarlo.',
-          'Tenés 3 vidas y 2 minutos para las dos fases.',
+          'Excavá con cuidado para descubrir el fósil.',
+          'Primero usá el pico para encontrar la ubicación aproximada. Después cambiá al cincel para revelar el contorno sin dañar el hallazgo. Por último, utilizá el pincel para retirar la tierra restante y dejar el fósil completamente al descubierto. ¡Elegí la herramienta correcta en cada etapa para completar la excavación!.',
         ],
         ctaLabel: 'Jugar',
       }}

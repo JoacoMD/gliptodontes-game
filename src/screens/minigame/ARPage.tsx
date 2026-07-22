@@ -54,10 +54,11 @@ export function ARPage(): React.JSX.Element {
       for (const l of f.locations) {
         fossils.push({
           id: `${f.id + i}`,
-          name: `${f.name}`,
-          model: `${f.model}`,
+          name: f.name,
+          model: f.model,
           scale: f.scale,
-          funfact: `${f.funfact}`,
+          funfact: f.funfact,
+          image: f.image,
           lat: l.lat,
           lng: l.lng,
           heading: calculateBearing(
@@ -171,6 +172,7 @@ export function ARPage(): React.JSX.Element {
       title: '¡Bien hecho!',
       body: `Identificaste el ${target.name}.`,
       didYouKnow: target.funfact,
+      image: target.image,
       primaryCta: { label: 'Continuar', action: 'retry' },
       secondaryCta: { label: 'Volver al menú', action: 'menu' },
     });
@@ -278,6 +280,7 @@ export function ARPage(): React.JSX.Element {
         result={result}
         didYouKnow={result?.didYouKnow}
         onAction={handleResultAction}
+        image={result?.image}
       />
     </section>
   );

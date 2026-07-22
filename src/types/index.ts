@@ -78,6 +78,7 @@ export interface MinigameResult {
   primaryCta: { label: string; action: 'retry' | 'next' | 'menu' };
   secondaryCta?: { label: string; action: 'retry' | 'next' | 'menu' };
   didYouKnow?: string;
+  image?: string;
 }
 
 export interface Fossil {
@@ -86,6 +87,7 @@ export interface Fossil {
   funfact: string;
   model: string;
   scale: number;
+  image: string;
 }
 
 export interface FossilData extends Fossil {

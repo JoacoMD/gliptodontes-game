@@ -31,7 +31,7 @@ export const LEARN_TOPICS: LearnTopic[] = [
     title: 'Perezoso gigante',
     summary: 'Un perezoso del tamaño de un elefante que vivía en el suelo.',
     facts: [
-      { label: 'Época', value: 'Hace más de 10 000 años (Pleistoceno)' },
+      { label: 'Época', value: 'Hace más de 10000 años (Pleistoceno)' },
       { label: 'Tamaño', value: 'Hasta 6 metros de largo y 4 toneladas' },
       { label: 'Qué comía', value: 'Plantas, hojas y ramas' },
       { label: 'Dónde vivía', value: 'Llanuras y bosques de la Pampa' },
@@ -48,7 +48,7 @@ export const LEARN_TOPICS: LearnTopic[] = [
     title: 'Gliptodonte',
     summary: 'Un pariente gigante del armadillo, con caparazón de hueso.',
     facts: [
-      { label: 'Época', value: 'Hace más de 10 000 años (Pleistoceno)' },
+      { label: 'Época', value: 'Hace más de 10000 años (Pleistoceno)' },
       { label: 'Tamaño', value: 'Cerca de 1,5 metros de alto, hasta 1 tonelada' },
       { label: 'Qué comía', value: 'Pastos y plantas bajas' },
       { label: 'Dónde vivía', value: 'Las llanuras pampeanas' },
@@ -66,7 +66,7 @@ export const LEARN_TOPICS: LearnTopic[] = [
     title: 'Toxodonte',
     summary: 'Parecido a un rinoceronte sin cuerno, pero único de Sudamérica.',
     facts: [
-      { label: 'Época', value: 'Hace más de 10 000 años (Pleistoceno)' },
+      { label: 'Época', value: 'Hace más de 10000 años (Pleistoceno)' },
       { label: 'Tamaño', value: 'Cerca de 2,7 metros de largo y 1,5 toneladas' },
       { label: 'Qué comía', value: 'Pastos y plantas' },
       { label: 'Dónde vivía', value: 'Cerca de ríos y lagunas de la Pampa' },
@@ -84,7 +84,7 @@ export const LEARN_TOPICS: LearnTopic[] = [
     title: 'Macrauquenia',
     summary: 'Un animal con cuerpo de camello y quizá una pequeña trompa.',
     facts: [
-      { label: 'Época', value: 'Hace más de 10 000 años (Pleistoceno)' },
+      { label: 'Época', value: 'Hace más de 10000 años (Pleistoceno)' },
       { label: 'Tamaño', value: 'Cerca de 3 metros de largo' },
       { label: 'Qué comía', value: 'Hojas y plantas' },
       { label: 'Dónde vivía', value: 'Las llanuras de la Pampa' },
@@ -102,7 +102,7 @@ export const LEARN_TOPICS: LearnTopic[] = [
     title: 'Mastodonte',
     summary: 'Un pariente de los elefantes, con colmillos y trompa.',
     facts: [
-      { label: 'Época', value: 'Hace más de 10 000 años (Pleistoceno)' },
+      { label: 'Época', value: 'Hace más de 10000 años (Pleistoceno)' },
       { label: 'Tamaño', value: 'Cerca de 2,5 a 3 metros de alto' },
       { label: 'Qué comía', value: 'Ramas, hojas y frutos' },
       { label: 'Dónde vivía', value: 'Bosques y llanuras' },
@@ -119,7 +119,7 @@ export const LEARN_TOPICS: LearnTopic[] = [
     title: 'Caballo americano',
     summary: 'Un caballo salvaje que vivió en la Pampa y se extinguió.',
     facts: [
-      { label: 'Época', value: 'Hace más de 10 000 años (Pleistoceno)' },
+      { label: 'Época', value: 'Hace más de 10000 años (Pleistoceno)' },
       { label: 'Tamaño', value: 'Parecido a un caballo actual, algo más robusto' },
       { label: 'Qué comía', value: 'Pastos' },
       { label: 'Dónde vivía', value: 'Las llanuras pampeanas' },
@@ -137,7 +137,7 @@ export const LEARN_TOPICS: LearnTopic[] = [
     title: 'Tigre dientes de sable',
     summary: 'Un gran cazador con dos colmillos enormes.',
     facts: [
-      { label: 'Época', value: 'Hace más de 10 000 años (Pleistoceno)' },
+      { label: 'Época', value: 'Hace más de 10000 años (Pleistoceno)' },
       { label: 'Tamaño', value: 'Cerca de 1,2 metros de alto' },
       { label: 'Qué comía', value: 'Otros animales grandes (era carnívoro)' },
       { label: 'Dónde vivía', value: 'Las llanuras de la Pampa' },
@@ -155,7 +155,7 @@ export const LEARN_TOPICS: LearnTopic[] = [
     title: 'Oso gigante',
     summary: 'Uno de los osos más grandes que existió en el planeta.',
     facts: [
-      { label: 'Época', value: 'Hace más de 10 000 años (Pleistoceno)' },
+      { label: 'Época', value: 'Hace más de 10000 años (Pleistoceno)' },
       { label: 'Tamaño', value: 'Hasta 3,5 metros parado y más de 1 tonelada' },
       { label: 'Qué comía', value: 'De todo: plantas, frutos y otros animales' },
       { label: 'Dónde vivía', value: 'Sudamérica, incluida la Pampa' },

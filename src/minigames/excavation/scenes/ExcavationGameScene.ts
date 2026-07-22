@@ -55,6 +55,16 @@ export class ExcavationGameScene extends MinigameSceneBase {
     this.model?.selectTool(tool);
   };
 
+  private updateCursor(tool: Tool): void {
+    const cursors: Record<Tool, string> = {
+      pick: "url('assets/ui/pick-cursor.png') 8 8, auto",
+      chisel: "url('assets/ui/cincel-cursor.png') 8 8, auto",
+      brush: "url('assets/ui/brush-cursor.png') 8 8, auto",
+    };
+
+    this.input.setDefaultCursor(cursors[tool]);
+  }
+
   constructor() {
     super(SceneKeys.MinigameExcavation);
   }
@@ -99,6 +109,8 @@ export class ExcavationGameScene extends MinigameSceneBase {
       timeLimitSec: SettingsStore.getKey('noTimeMode') ? null : 120,
     });
 
+    this.updateCursor(this.model.selectedTool);
+
     this.attachModelEvents();
     this.attachInputEvents();
 
@@ -140,6 +152,7 @@ export class ExcavationGameScene extends MinigameSceneBase {
     this.model.start();
     this.emitState();
   }
+
 
   // -------- Setup --------
 
@@ -450,7 +463,10 @@ export class ExcavationGameScene extends MinigameSceneBase {
     this.model.on('progress', () => this.emitState());
     this.model.on('lives', () => this.emitState());
     this.model.on('time', () => this.emitState());
-    this.model.on('toolChanged', () => this.emitState());
+    this.model.on('toolChanged', () => {
+      this.updateCursor(this.model.selectedTool);
+      this.emitState();
+    });
     this.model.on('phaseAdvanced', () => {
       // Al arrancar la fase 2, sugerimos el pincel automáticamente.
       this.model.selectTool('brush');
